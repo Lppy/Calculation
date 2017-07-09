@@ -12,12 +12,12 @@ Integral::~Integral()
 {
 }
 
-double Integral::Romberg(const int n, const double coe[], const double a, const double b, const double eps) {
+double Integral::Romberg(double(*f)(double x), const double a, const double b, const double eps) {
 	double r[2][MAX_N];
 	double hsum, error, h, ni, p, q;
 	int i, j, flag = 0;
 	//get the first triangle i=1,2
-	hsum = f(n, coe, a) + f(n, coe ,b);
+	hsum = f(a) + f(b);
 	h = b - a;
 	r[0][0] = 0.5*h*hsum;
 	q = 1;
@@ -26,7 +26,7 @@ double Integral::Romberg(const int n, const double coe[], const double a, const 
 		h /= 2;
 		ni = a - h;
 		for (j = 1;j <= q;j++)
-			hsum += 2 * f(n, coe, ni + h * 2 * j);
+			hsum += 2 * f(ni + h * 2 * j);
 		q *= 2;
 		r[1][0] = 0.5*h*hsum;
 		p = 4;
@@ -48,30 +48,21 @@ double Integral::Romberg(const int n, const double coe[], const double a, const 
 	}
 }
 
-double Integral::quad(const int n, const double coe[], const double a, const double b)
+double Integral::quad(double(*f)(double x), const double a, const double b)
 {
 	int step = abs(b - a) / 0.01;
 	double h = 0.01;
 	double xi[3],x;
-	xi[0] = f(n, coe, a) + f(n, coe, b);
+	xi[0] = f(a) + f(b);
 	xi[1] = xi[2] = 0;
 	for (int i = 0;i < step;i++) {
 		x = a + i*h;
 		if (i % 2) {
-			xi[2] += f(n, coe, x);
-			xi[1] += f(n, coe, x);
+			xi[2] += f(x);
+			xi[1] += f(x);
 		}
 	}
 	return h*(xi[0]+2*xi[2]+4*xi[1])/3;
 }
 
-double Integral::f(const int n, const double coe[], const double x)
-{
-	double res = 0, xp = 1;
-	for (int i = 0;i <= n;i++) {
-		res += coe[i] * xp;
-		xp *= x;
-	}
-//	cout << "f(" << x << ")=" << res << endl;
-	return res;
-}
+
