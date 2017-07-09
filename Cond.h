@@ -8,8 +8,7 @@ using namespace std;
 class Cond
 {
 	friend class LU;
-//private:
-public:
+private:
 	/*@param   inva: return the inverse of the matrix
 	  @return  true if a is nonsingular, false if not 
 	*/
