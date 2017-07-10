@@ -1,8 +1,7 @@
 #pragma once
-#include <utility>
+#include "type.h"
 #include <vector>
 using namespace std;
-typedef pair<double, double> point;
 class ODE   //ordinary differential equation  常微分方程
 {
 public:
