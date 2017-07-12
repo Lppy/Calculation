@@ -1,4 +1,5 @@
-#include "View.h"
+#include "View/View.h"
+#include "View/subview.h"
 #include "ui_View.h"
 #include "iqwidget.h"
 #include <QTextEdit>
@@ -47,18 +48,18 @@ void View::show()
     QMainWindow::show();
 }
 
-void View::setInputString(QSharedPointer<QString> in)
+void View::setInputString(shared_ptr<QString> in)
 {
     in_ptr = in;
 }
-void View::setOutputString(QSharedPointer<QString> out)
+void View::setOutputString(shared_ptr<QString> out)
 {
     out_ptr = out;
 }
 
-void View::setButtonRun(QSharedPointer<iEventClass> iE)
+void View::setButtonRun(shared_ptr<iEventClass> iE)
 {
-    button = new iQPushButton(this, QSharedPointer<iEventClass>(this), iE);
+    button = new iQPushButton(this, shared_ptr<iEventClass>(this), iE);
     button->resize(80,35);
     button->move(850,620);
     button->setText("RUN");
@@ -70,8 +71,29 @@ void View::refreshDisplay()
     QTextBrowser* label = ui->textBrowser;
     label->setText(QString(out_ptr->data()));
 }
+
 void View::execEvent(){
     *in_ptr = ui->text->toPlainText();
+    ButtonRunClickCommand->exec();
+}
+
+void View::update(const string& type){
+    if(type=="text"){
+        refreshDisplay();
+    }
+    else if(type=="graph"){
+        SubView sw;
+        shared_ptr<iDataClass> d(new Data(*points));
+        sw.show(d);
+    }
+}
+
+void View::setButtonRunClickCommand(shared_ptr<iCommand> command){
+    ButtonRunClickCommand=command;
+}
+
+void View::setPoints(shared_ptr<vector<Point>> p){
+    points=p;
 }
 
 

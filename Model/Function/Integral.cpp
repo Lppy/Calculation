@@ -50,7 +50,7 @@ double Integral::Romberg(double(*f)(double x), const double a, const double b, c
 
 double Integral::quad(double(*f)(double x), const double a, const double b)
 {
-	int step = abs(b - a) / 0.01;
+    int step = fabs(b - a) / 0.01;
 	double h = 0.01;
 	double xi[3],x;
 	xi[0] = f(a) + f(b);

@@ -3,7 +3,8 @@
 
 #include <QLabel>
 #include <QPushButton>
-#include <QSharedPointer>
+#include <memory>
+using namespace std;
 
 class iEventClass //event's abstract class
 {
@@ -26,14 +27,14 @@ class iQPushButton : public QPushButton
     Q_OBJECT
 
 public:
-    explicit iQPushButton(QWidget *parent, QSharedPointer<iEventClass> iEV, QSharedPointer<iEventClass> iEVM);
+    explicit iQPushButton(QWidget *parent, shared_ptr<iEventClass> iEV, shared_ptr<iEventClass> iEVM);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
 private:
-    QSharedPointer<iEventClass> iEventForView;
-    QSharedPointer<iEventClass> iEventForViewModel;
+    shared_ptr<iEventClass> iEventForView;
+    shared_ptr<iEventClass> iEventForViewModel;
 };
 
 #endif // IQLABLE_H

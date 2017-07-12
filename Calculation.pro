@@ -27,13 +27,36 @@ SOURCES += main.cpp\
     View/View.cpp \
     iqwidget.cpp \
     View/subview.cpp \
-    View/qcustomplot/qcustomplot.cpp
+    View/qcustomplot/qcustomplot.cpp \
+    Model/Function/Cond.cpp \
+    Model/Function/Integral.cpp \
+    Model/Function/ODE.cpp \
+    Model/Function/Root_of_Polynomial.cpp \
+    Model/Model.cpp \
+    ViewModel/Command/ButtonRunClickCommand.cpp \
+    ViewModel/Command/ShowGraphCommand.cpp \
+    ViewModel/ViewModel.cpp
 
 HEADERS  += \
     View/View.h \
     iqwidget.h \
     View/subview.h \
-    View/qcustomplot/qcustomplot.h
+    View/qcustomplot/qcustomplot.h \
+    Model/Function/Cond.h \
+    Model/Function/curve_fitting.h \
+    Model/Function/Integral.h \
+    Model/Function/ODE.h \
+    Model/Function/Root_of_Polynomial.h \
+    Model/Model.h \
+    Model/Function/matrix.h \
+    Common/Notification.h \
+    ViewModel/ViewModel.h \
+    Common/iCommand.h \
+    Common/Params.h \
+    Model/Function/eigenvalue.h \
+    Model/Function/root_of_matrix.h \
+    ViewModel/Command/ShowGraphCommand.h \
+    ViewModel/Command/ButtonRunClickCommand.h
 
 FORMS    += \
     View.ui

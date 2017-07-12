@@ -1,8 +1,9 @@
 #pragma once
-#include "type.h"
 #include <vector>
+#include <Common/params.h>
+
 using namespace std;
-class ODE   //ordinary differential equation  常微分方程
+class ODE   //ordinary differential equation
 {
 public:
 	ODE();
@@ -15,6 +16,6 @@ public:
 	  @return			(step+1) sample point of y(ti) in the form of (ti,y(ti))
 	  @note				 y'=f(t,y)   a<=t<=b  y(a)=ya 
 	*/
-	vector<point> ode45(double(*f)(double t0, double w0), double a, double b, const int step, double ya);
+    vector<Point> ode45(double(*f)(double t0, double w0), double a, double b, const int step, double ya);
 };
 

@@ -5,7 +5,7 @@ iEventClass::~iEventClass(){}
 
 iDataClass::~iDataClass(){}
 
-iQPushButton::iQPushButton(QWidget *parent, QSharedPointer<iEventClass> iEV, QSharedPointer<iEventClass> iEVM) : QPushButton(parent)
+iQPushButton::iQPushButton(QWidget *parent, shared_ptr<iEventClass> iEV, shared_ptr<iEventClass> iEVM) : QPushButton(parent)
 {
     this->setMouseTracking(true);
     iEventForView = iEV;
@@ -17,7 +17,7 @@ void iQPushButton::mouseReleaseEvent(QMouseEvent *event)
     QPushButton::mouseReleaseEvent(event);
 
     iEventForView->execEvent();
-    iEventForViewModel->execEvent();
-    iEventForView->refreshDisplay();
+  //  iEventForViewModel->execEvent();
+  //  iEventForView->refreshDisplay();
 }
 

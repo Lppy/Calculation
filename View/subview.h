@@ -2,16 +2,16 @@
 #define SUBVIEW_H
 
 #include "iqwidget.h"
-#include <QSharedPointer>
+#include <memory>
 
 class SubView
 {
 public:
     SubView(){}
-    void show(QSharedPointer<iDataClass> iD);
+    void show(shared_ptr<iDataClass> iD);
 
 private:
-    QSharedPointer<iDataClass> iData;
+    shared_ptr<iDataClass> iData;
 
     void paintBrokenline();
     void paintCurve();

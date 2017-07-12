@@ -1,56 +1,38 @@
 #include "View/View.h"
 #include "View/subview.h"
+#include "Common/Params.h"
+#include "Common/Notification.h"
+#include "ViewModel/ViewModel.h"
 #include <QApplication>
 #include "iqwidget.h"
-#include <QSharedPointer>
+#include <memory>
 #include <QDebug>
-
-class Data : public iDataClass{
-public:
-    Data(){dataType=Curve;}
-    ~Data(){}
-};
 
 class iModel{
 
-};
-
-class iViewModel : public iEventClass{
-public:
-    iViewModel(){
-        in = QSharedPointer<QString>(new QString("Input here")) ;
-        out = QSharedPointer<QString>(new QString("Output here"));
-    }
-
-    void execEvent(){
-        *out = *in; //处理数据
-
-        //若需要可视化数据
-        SubView sw;
-        QSharedPointer<iDataClass> d(new Data());
-        sw.show(d);
-    }
-
-    QSharedPointer<QString> getInputString(){return in;}
-    QSharedPointer<QString> getOutputString(){return out;}
-    ~iViewModel(){}
-
-private: //viewmodel层应包含model对象共享指针，供其调用model处理数据
-    QSharedPointer<QString> in, out;
 };
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    iViewModel iWm;
-    View w;
+    shared_ptr<View> pv(new View());
+    shared_ptr<Model> pm(new Model());
+    shared_ptr<ViewModel> pvm(new ViewModel(pm));
 
-    w.setInputString(iWm.getInputString());
-    w.setOutputString(iWm.getOutputString());
-    w.setButtonRun(QSharedPointer<iEventClass>(&iWm));
+    pm->AddNotification(static_pointer_cast<INotification,ViewModel>(pvm));
 
-    w.show();
+    pv->setInputString(pvm->getInputString());
+    pvm->AddNotification(static_pointer_cast<INotification,View>(pv));
+    pvm->setOutputString(pm->getRes());
+    pv->setOutputString(pvm->getOutputString());
+    pv->setButtonRun(static_pointer_cast<iEventClass,View>(pv));
+
+    pv->setButtonRunClickCommand(pvm->getButtonRunClickCommand());
+    pvm->setPoints(pm->getPoints());
+    pv->setPoints(pvm->getPoints());
+
+    pv->show();
 
     return a.exec();
 }

@@ -2,7 +2,7 @@
 #include "View/qcustomplot/qcustomplot.h"
 #include <QDebug>
 
-void SubView::show(QSharedPointer<iDataClass> iD)
+void SubView::show(shared_ptr<iDataClass> iD)
 {
     iData = iD;
     switch(iData->dataType)

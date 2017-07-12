@@ -17,7 +17,7 @@ public:
 		factor.resize(2, 0);
 	}
 
-	~Fit() {};
+    ~Fit() {}
 
 //直线拟合，一元回归，默认数据不保存
 	template<typename T>
