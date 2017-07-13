@@ -22,9 +22,18 @@ void View::setWidget()
     this->setFixedSize(1000,800);
     this->setWindowTitle("Calculator");
 
-    QPalette bg = palette();
-    bg.setColor(QPalette::Background, QColor(255,255,255,255));
-    bg.setColor(QPalette::Foreground, QColor(0,0,0,255));
+    QPixmap background(":/Image/background.jpg");
+    QPalette palette=this->palette();
+    palette.setBrush(QPalette::Background,QBrush(background));
+    this->setPalette(palette);
+
+    QString buttonStyle = "QPushButton{background-color:black;\
+            color: white;   border-radius: 5px;  border: 1px groove gray;\
+            border-style: outset;}"
+            "QPushButton:hover{background-color:#dcdddd; color: black;}"
+            "QPushButton:pressed{background-color:white;\
+            border-style: inset; }";
+    button->setStyleSheet(buttonStyle);
 
     QTextEdit* text = ui->text;
     text->setFontPointSize(10);
@@ -33,23 +42,22 @@ void View::setWidget()
     text->append(QString(in_ptr->data()));
     text->show();
 
-    QTextBrowser* label = ui->textBrowser;
-    label->setFontPointSize(10);
-    label->resize(750,100);
-    label->move(200,650);
-    label->setText(QString(out_ptr->data()));
-    label->setAlignment(Qt::AlignTop);
-
-    label->show();
+    QTextBrowser* textBrowser = ui->textBrowser;
+    textBrowser->setFontPointSize(10);
+    textBrowser->resize(750,100);
+    textBrowser->move(200,650);
+    textBrowser->setText(QString(out_ptr->data()));
+    textBrowser->setAlignment(Qt::AlignTop);
+    textBrowser->show();
 }
 void View::show()
 {
-    setWidget();
     button = new iQPushButton(this, shared_ptr<View>(this));
     button->resize(80,35);
     button->move(850,620);
     button->setText("RUN");
     button->show();
+    setWidget();
     QMainWindow::show();
 }
 

@@ -58,3 +58,6 @@ HEADERS  += \
 
 FORMS    += \
     View.ui
+
+RESOURCES += \
+    image.qrc
