@@ -87,7 +87,7 @@ void View::update(const string& type){
     }
     else if(type=="graph"){
         SubView sw;
-        shared_ptr<iDataClass> d(new Data(*points));
+        shared_ptr<iDataClass> d(points);
         sw.show(d);
     }
 }
@@ -96,7 +96,7 @@ void View::setCalculateCommand(shared_ptr<iCommand> command){
     calculateCommand=command;
 }
 
-void View::setPoints(shared_ptr<vector<Point>> p){
+void View::setPoints(shared_ptr<Data> p){
     points=p;
 }
 

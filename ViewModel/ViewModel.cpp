@@ -19,14 +19,14 @@ void ViewModel::setModel(shared_ptr<Model> p_model){
 shared_ptr<Model>& ViewModel::getModel(){
     return pm;
 }
-shared_ptr<vector<Point>>& ViewModel::getPoints(){
+shared_ptr<Data>& ViewModel::getPoints(){
     return points;
 }
-void ViewModel::setPoints(shared_ptr<vector<Point>> p){
+void ViewModel::setPoints(shared_ptr<Data> p){
     points=p;
 }
 
-shared_ptr<QString> ViewModel::getInputString(){
+shared_ptr<QString>& ViewModel::getInputString(){
     return in;
 }
 shared_ptr<QString>& ViewModel::getOutputString(){
@@ -43,16 +43,6 @@ void ViewModel::setInputString(shared_ptr<QString> in)
 void ViewModel::setOutputString(shared_ptr<QString> out)
 {
     this->out = out;
-}
-
-//for test
-double ViewModel::f(double x){
-    return x;
-}
-
-//for test
-double ViewModel::ff(double t,double w){
-    return w;
 }
 
 void ViewModel::Calculate(string &in){

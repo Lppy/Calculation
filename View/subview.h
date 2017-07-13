@@ -2,6 +2,7 @@
 #define SUBVIEW_H
 
 #include "iqwidget.h"
+#include "Common/params.h"
 #include <memory>
 
 class SubView

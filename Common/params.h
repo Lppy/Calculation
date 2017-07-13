@@ -14,9 +14,16 @@ class Data : public iDataClass{
 private:
     vector<Point> point;
 public:
+    Data(){}
     Data(vector<Point>& point):point(point)
     {
        dataType=Curve;
+    }
+    void setPoint(vector<Point>& p){
+        point=p;
+    }
+    vector<Point>& getPoint(){
+        return point;
     }
     ~Data(){}
 };

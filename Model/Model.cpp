@@ -5,13 +5,22 @@
 Model::Model()
 {
     this->res=shared_ptr<QString>(new QString("res"));
-    this->points=shared_ptr<vector<Point>>(new vector<Point>);
+    this->points=shared_ptr<Data>(new Data);
 }
 
 Model::~Model()
 {
 }
 
+//for test
+double Model::f(double x){
+    return x;
+}
+
+//for test
+double Model::ff(double t,double w){
+    return w-t*t+1;
+}
 
 void Model::Calculate(string &in){
     //解释器处理字符串in，并调用model中的计算函数
@@ -19,9 +28,9 @@ void Model::Calculate(string &in){
     int n=2;
     double c[3]={1,2,1};
     double eps=0.1;
-    getPolynomialRoot(n,c,eps);
-    //getIntegral(f,(double)1,(double)2,(double)0.0001);
-  //     pm->getODE(ff,(double)1,(double)2,(double)19,(double)0);*/
+  //  getPolynomialRoot(n,c,eps);
+  //getIntegral(f,(double)1,(double)2,(double)0.0001);
+    getODE(ff,(double)0,(double)2,(double)20,(double)0.5);
 }
 
 
@@ -73,9 +82,12 @@ void Model::getODE(double(*f)(double t0, double w0), double a, double b, const i
 {
     ODE ode;
     vector<Point> p = ode.ode45(f, a, b, step, ya);
-    *points=p;
+    points->setPoint(p);
     string s="graph";
     cout<<s<<endl;
+    vector<Point> pdata=points->getPoint();
+    for(auto it=pdata.begin();it!=pdata.end();it++)
+        cout<<"p "<<it->first<<" "<<it->second<<endl;
     this->notify(s);
 }
 
@@ -132,7 +144,7 @@ string Model::double2string(double res)
     return "invalid conversion";
 }
 
-shared_ptr<vector<Point>>& Model::getPoints(){
+shared_ptr<Data>& Model::getPoints(){
     return points;
 }
 

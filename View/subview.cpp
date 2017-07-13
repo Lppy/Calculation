@@ -78,13 +78,18 @@ void SubView::paintCurve()
 
     QCustomPlot *customPlot = new QCustomPlot;
 
-    int dataCount = 20;
+  //  int dataCount = 20;
+    shared_ptr<Data> dp=static_pointer_cast<Data,iDataClass>(iData);
+    vector<Point> point=dp->getPoint();
+    int dataCount=point.size();
     QVector<QCPGraphData> x(dataCount);
     double min = 0, max = 0;
     for (int i=0; i<dataCount; ++i)
     {
-      x[i].key = i;
-      x[i].value = i*i*i - 7*i*i - i + 10;
+   //   x[i].key = i;
+   //   x[i].value = i*i*i - 7*i*i - i + 10;
+      x[i].key=point[i].first;
+      x[i].value=point[i].second;
       if(x[i].value>max) max = x[i].value;
       if(x[i].value<min) min = x[i].value;
     }

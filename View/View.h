@@ -29,7 +29,7 @@ public:
     void setInputString(shared_ptr<QString> in);
     void setOutputString(shared_ptr<QString> out);
     void setButtonRun(shared_ptr<iEventClass> iE);
-    void setPoints(shared_ptr<vector<Point>> p);
+    void setPoints(shared_ptr<Data> p);
     shared_ptr<QString>& getInputString();
 
     void refreshDisplay();
@@ -40,7 +40,7 @@ public:
 private:
     Ui::View *ui;
     shared_ptr<QString> in_ptr, out_ptr;
-    shared_ptr<vector<Point>> points;
+    shared_ptr<Data> points;
     shared_ptr<iCommand> calculateCommand;
     iQPushButton* button;
     void setWidget();

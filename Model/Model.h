@@ -14,11 +14,15 @@
 class Model:public Proxy_Notification
 {
 protected:
-    shared_ptr<vector<Point>> points;
+    shared_ptr<Data> points;
     shared_ptr<QString> res;
 public:
 	Model();
 	~Model();
+    //for test
+    static double f(double x);
+    //for test
+    static double ff(double t,double w);
     void Calculate(string &in);
     /*
     @param n   the degree of the polynomial
@@ -66,7 +70,7 @@ public:
     void getEigenvalue(Matrix a);
     //求解AX=b
     void getMatrixRoot(Matrix a);
-    shared_ptr<vector<Point>>& getPoints();
+    shared_ptr<Data>& getPoints();
     shared_ptr<QString>& getRes();
     string double2string(double res);
 };
