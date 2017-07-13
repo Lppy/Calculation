@@ -5,6 +5,9 @@
 #include "Function/Integral.h"
 #include "Function/ODE.h"
 #include "Function/Root_of_Polynomial.h"
+#include "Function/eigenvalue.h"
+#include "Function/Root_of_Matrix.h"
+#include "Function/curve_fitting.h"
 #include "Function/Cond.h"
 #include <QString>
 #include <memory>
@@ -77,6 +80,8 @@ public:
     void getEigenvalue(Matrix a);
     //求解AX=b
     void getMatrixRoot(Matrix a);
+    //曲线拟合
+    void polyfit(double* x, double* y, size_t length, int PolyN);
     shared_ptr<Data>& getPoints();
     shared_ptr<QString>& getRes();
     string double2string(double res);
