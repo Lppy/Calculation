@@ -28,6 +28,14 @@ public:
         for (int i = 0;i < row;i++)
             entry[i].resize(col);
     }
+    void print() {
+        for (int i = 0; i < entry.size(); i++) {
+            for (int j = 0; j < entry[i].size(); j++) {
+                cout << entry[i][j] << ' ';
+            }
+            cout << endl;
+        }
+    }
     void resize(int row, int col) {
         this->row=row;
         this->col=col;
