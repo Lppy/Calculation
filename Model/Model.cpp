@@ -248,3 +248,117 @@ shared_ptr<Data>& Model::getPoints(){
 shared_ptr<QString>& Model::getRes(){
     return res;
 }
+
+
+bool Model::is_legal_param(const string &param_name) {
+    int end, i;
+    for (i = param_name.length() - 1; i >= 0; i--)
+        if(!isspace(param_name[i]))
+            break;
+    end = i;
+    for (i = 0; i < end; i++)
+        if(!isalnum(param_name[i]))
+            return false;
+    return true;
+}
+
+void Model::shell_save_matrix(string &in, istringstream &is) {
+    // 有矩阵定义标志
+    string param_name;
+    int row_num = 1, i;
+    char ch;
+    double tmp_num;
+
+    param_name = in.substr(0, in.find('='));
+    if (!is_legal_param(param_name))
+        throw calc_error("illegal param name");
+    // 解析矩阵
+    // a = [ 1 2 3 4 5; 2 3 4 5 6; 3 4 5 6 7; 4 5 6 7 8]
+    // fda921fs=[1,2,3;2,4,5]
+    vector<vector<double>> data;
+    vector<double> row;
+    for (i = 0; i < in.length(); i++)
+        if (in[i] == ';')
+            row_num++;
+    for (i = 0; i < row_num; i++) {
+        row.clear();
+        while (true) {
+            if (is.get(ch)) {
+                if(ch == ',' || isspace(ch))
+                    continue;
+                if (ch == ';' || ch == ']')
+                    break;
+                is.putback(ch);
+            }
+            is >> tmp_num;
+            row.push_back(tmp_num);
+        }
+        data.push_back(row);
+    }
+    // 存储矩阵
+    Matrix m(data);
+    m.print();
+    matrix_table[param_name] = m;
+}
+
+void Model::shell_derivative(string &in) {
+    // d/dx (3x^4-123) at x=-123.255
+    string::size_type end;
+    if ((end = in.find("at x=")) == in.npos)
+        throw calc_error("must assign x");
+    string func_str = in.substr(5, end - 5);
+
+    resolve_polynomial(func_str);
+    double where = atof(in.substr(end + 5).c_str());
+    // to be done
+    // 调用求导的函数:where就是所要求导的地方，f函数的系数已经解析完
+}
+
+void Model::shell_integrate(string &in) {
+    string::size_type end;
+    if ((end = in.find("x=")) == in.npos)
+        throw calc_error("must assign x");
+    string func_str = in.substr(4, end - 4);
+
+    resolve_polynomial(func_str);
+    // 解析x=1...10.3
+
+}
+
+void Model::resolve_polynomial(string &func_str) {
+    istringstream is(func_str);
+    double co;
+    int exp;
+    char ch;
+
+    while (is.get(ch)) {
+        if (isdigit(ch) || ch == '-') {
+            is.putback(ch);
+            is >> co;
+            if (is.get(ch) && ch != 'x' && ch != '*') {
+                coefficient[0] = co;
+                break;
+            }
+            while (is.get(ch) || ch == '-')
+                if (isdigit(ch)) {
+                    is.putback(ch);
+                    is >> exp;
+                    coefficient[exp] = co;
+                    break;
+                }
+        }
+    }
+}
+
+void Model::shell_eig(string &in) {
+    string::size_type start;
+    size_t len;
+    start = in.find('(');
+    len = in.find(')') - start - 1;
+    string param_name = in.substr(start + 1, len);
+    if(matrix_table.find(param_name) != matrix_table.end()) {
+        // to be done
+        // 调用求eig的函数
+    } else
+        throw calc_error("matrix not found");
+}
