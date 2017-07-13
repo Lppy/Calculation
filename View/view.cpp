@@ -74,7 +74,11 @@ void View::refreshDisplay()
 
 void View::execEvent(){
     *in_ptr = ui->text->toPlainText();
-    ButtonRunClickCommand->exec();
+    string str=ui->text->toPlainText().toStdString();
+    shared_ptr<StringParam> sp=shared_ptr<StringParam>(new StringParam);
+    sp->setString(str);
+    calculateCommand->setParam(static_pointer_cast<Param,StringParam>(sp));
+    calculateCommand->exec();
 }
 
 void View::update(const string& type){
@@ -88,8 +92,8 @@ void View::update(const string& type){
     }
 }
 
-void View::setButtonRunClickCommand(shared_ptr<iCommand> command){
-    ButtonRunClickCommand=command;
+void View::setCalculateCommand(shared_ptr<iCommand> command){
+    calculateCommand=command;
 }
 
 void View::setPoints(shared_ptr<vector<Point>> p){

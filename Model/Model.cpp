@@ -11,7 +11,18 @@ Model::Model()
 Model::~Model()
 {
 }
-//POLYNOMIALROOT,COND2,CONDINF,ODE,INTR,INTQ,EIGENVALUE,MATRIXROOT} command;
+
+
+void Model::Calculate(string &in){
+    //解释器处理字符串in，并调用model中的计算函数
+    cout<<"in Model:Calculate "<<in<<endl;
+    int n=2;
+    double c[3]={1,2,1};
+    double eps=0.1;
+    getPolynomialRoot(n,c,eps);
+    //getIntegral(f,(double)1,(double)2,(double)0.0001);
+  //     pm->getODE(ff,(double)1,(double)2,(double)19,(double)0);*/
+}
 
 
 void Model::getPolynomialRoot(const int n, const double c[], const double EPS)

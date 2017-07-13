@@ -18,7 +18,6 @@ class View;
 
 class View : public QMainWindow,
              public iEventClass,
-             public Proxy_Notification,
              public INotification
 {
     Q_OBJECT
@@ -37,29 +36,14 @@ public:
     void execEvent();
     void show();
     void update(const string& type);
-    void setButtonRunClickCommand(shared_ptr<iCommand> command);
+    void setCalculateCommand(shared_ptr<iCommand> command);
 private:
     Ui::View *ui;
     shared_ptr<QString> in_ptr, out_ptr;
     shared_ptr<vector<Point>> points;
-    shared_ptr<iCommand> ButtonRunClickCommand;
+    shared_ptr<iCommand> calculateCommand;
     iQPushButton* button;
     void setWidget();
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif

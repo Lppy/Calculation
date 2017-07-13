@@ -21,6 +21,22 @@ public:
     ~Data(){}
 };
 
+class Param{
+
+};
+
+class StringParam:public Param{
+private:
+    string input;
+public:
+    void setString(const string& in){
+        input=in;
+    }
+    string& getString(){
+        return input;
+    }
+};
+
 
 
 

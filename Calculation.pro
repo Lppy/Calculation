@@ -33,9 +33,8 @@ SOURCES += main.cpp\
     Model/Function/ODE.cpp \
     Model/Function/Root_of_Polynomial.cpp \
     Model/Model.cpp \
-    ViewModel/Command/ButtonRunClickCommand.cpp \
-    ViewModel/Command/ShowGraphCommand.cpp \
-    ViewModel/ViewModel.cpp
+    ViewModel/ViewModel.cpp \
+    ViewModel/Command/CalculateCommand.cpp
 
 HEADERS  += \
     View/View.h \
@@ -55,8 +54,7 @@ HEADERS  += \
     Common/Params.h \
     Model/Function/eigenvalue.h \
     Model/Function/root_of_matrix.h \
-    ViewModel/Command/ShowGraphCommand.h \
-    ViewModel/Command/ButtonRunClickCommand.h
+    ViewModel/Command/CalculateCommand.h
 
 FORMS    += \
     View.ui

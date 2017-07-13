@@ -19,6 +19,7 @@ protected:
 public:
 	Model();
 	~Model();
+    void Calculate(string &in);
     /*
     @param n   the degree of the polynomial
     @param c[]   an array of n+1 coefficients from n to 0 of the polynomials
