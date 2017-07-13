@@ -15,7 +15,9 @@ View::View(QWidget *parent) :
 View::~View()
 {
     delete ui;
-    delete button;
+    delete buttonRun;
+    delete buttonRedo;
+    delete buttonUndo;
 }
 void View::setWidget()
 {
@@ -33,17 +35,38 @@ void View::setWidget()
             "QPushButton:hover{background-color:#dcdddd; color: black;}"
             "QPushButton:pressed{background-color:white;\
             border-style: inset; }";
-    button->setStyleSheet(buttonStyle);
+
+    buttonRun = new iQPushButton(this, shared_ptr<View>(this));
+    buttonRun->resize(80,35);
+    buttonRun->move(850,620);
+    buttonRun->setText("RUN");
+    buttonRun->show();
+    buttonRun->setStyleSheet(buttonStyle);
+
+    buttonUndo = new iQPushButton(this, shared_ptr<View>(this));
+    buttonUndo->resize(80,35);
+    buttonUndo->move(650,620);
+    buttonUndo->setText("UNDO");
+    buttonUndo->show();
+    buttonUndo->setStyleSheet(buttonStyle);
+
+    buttonRedo = new iQPushButton(this, shared_ptr<View>(this));
+    buttonRedo->resize(80,35);
+    buttonRedo->move(750,620);
+    buttonRedo->setText("REDO");
+    buttonRedo->show();
+    buttonRedo->setStyleSheet(buttonStyle);
+
 
     QTextEdit* text = ui->text;
-    text->setFontPointSize(10);
+    text->setFontPointSize(15);
     text->resize(750,550);
     text->move(200,50);
     text->append(QString(in_ptr->data()));
     text->show();
 
     QTextBrowser* textBrowser = ui->textBrowser;
-    textBrowser->setFontPointSize(10);
+    textBrowser->setFontPointSize(15);
     textBrowser->resize(750,100);
     textBrowser->move(200,650);
     textBrowser->setText(QString(out_ptr->data()));
@@ -52,11 +75,6 @@ void View::setWidget()
 }
 void View::show()
 {
-    button = new iQPushButton(this, shared_ptr<View>(this));
-    button->resize(80,35);
-    button->move(850,620);
-    button->setText("RUN");
-    button->show();
     setWidget();
     QMainWindow::show();
 }
@@ -86,7 +104,7 @@ void View::refreshDisplay()
     label->setText(QString(out_ptr->data()));
 }
 
-void View::execEvent(){
+void View::execRun(){
     *in_ptr = ui->text->toPlainText();
     string str=ui->text->toPlainText().toStdString();
     shared_ptr<StringParam> sp=shared_ptr<StringParam>(new StringParam);
@@ -95,11 +113,20 @@ void View::execEvent(){
     calculateCommand->exec();
 }
 
-void View::update(const string& type){
+void View::execRedo(){
+    redoCommand->exec();
+}
+
+void View::execUndo(){
+    undoCommand->exec();
+}
+
+void View::update(const string& type){   
     if(type=="text"){
         refreshDisplay();
     }
     else if(type=="graph"){
+        refreshDisplay();
         SubView sw;
         shared_ptr<iDataClass> d(points);
         sw.show(d);
@@ -108,6 +135,14 @@ void View::update(const string& type){
 
 void View::setCalculateCommand(shared_ptr<iCommand> command){
     calculateCommand=command;
+}
+
+void View::setRedoCommand(shared_ptr<iCommand> command){
+    redoCommand=command;
+}
+
+void View::setUndoCommand(shared_ptr<iCommand> command){
+    undoCommand=command;
 }
 
 void View::setPoints(shared_ptr<Data> p){

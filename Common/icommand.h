@@ -8,7 +8,7 @@ class ViewModel;
 class iCommand{
 protected:
 public:
-    virtual void setParam(const shared_ptr<Param> &p)=0;
+    virtual void setParam(const shared_ptr<Param> &p){}
     virtual void exec()=0;
 };
 

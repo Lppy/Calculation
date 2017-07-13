@@ -13,6 +13,11 @@ iQPushButton::iQPushButton(QWidget *parent, shared_ptr<View> v) : QPushButton(pa
 void iQPushButton::mouseReleaseEvent(QMouseEvent *event)
 {
     QPushButton::mouseReleaseEvent(event);
-    pv->execEvent();
+    if(this->text()=="RUN")
+        pv->execRun();
+    else if(this->text()=="REDO")
+        pv->execRedo();
+    else if(this->text()=="UNDO")
+        pv->execUndo();
 }
 

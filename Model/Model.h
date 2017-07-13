@@ -18,6 +18,8 @@ class Model:public Proxy_Notification
 protected:
     shared_ptr<Data> points;
     shared_ptr<QString> res;
+    vector<Action> DoneList;  //for undo and redo
+    int pos;  //current position in DoneList
 public:
 	Model();
 	~Model();
@@ -26,6 +28,9 @@ public:
     //for test
     static double ff(double t,double w);
     void Calculate(string &in);
+    void Redo();
+    void Undo();
+    void DisplayAction(const Action& a);
     /*
     @param n   the degree of the polynomial
     @param c[]   an array of n+1 coefficients from n to 0 of the polynomials

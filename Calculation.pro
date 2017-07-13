@@ -34,7 +34,9 @@ SOURCES += main.cpp\
     Model/Function/Root_of_Polynomial.cpp \
     Model/Model.cpp \
     ViewModel/ViewModel.cpp \
-    ViewModel/Command/CalculateCommand.cpp
+    ViewModel/Command/CalculateCommand.cpp \
+    ViewModel/Command/RedoCommand.cpp \
+    ViewModel/Command/UndoCommand.cpp
 
 HEADERS  += \
     View/View.h \
@@ -54,10 +56,15 @@ HEADERS  += \
     Common/Params.h \
     Model/Function/eigenvalue.h \
     Model/Function/root_of_matrix.h \
-    ViewModel/Command/CalculateCommand.h
+    ViewModel/Command/CalculateCommand.h \
+    ViewModel/Command/RedoCommand.h \
+    ViewModel/Command/UndoCommand.h
 
 FORMS    += \
     View.ui
 
 RESOURCES += \
     image.qrc
+
+RC_FILE += \
+    image/logo.rc

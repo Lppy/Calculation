@@ -15,6 +15,8 @@ class iModel{
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QFont f("Cambria");
+    a.setFont(f);
 
     shared_ptr<View> pv(new View());
     shared_ptr<Model> pm(new Model());
@@ -32,6 +34,8 @@ int main(int argc, char *argv[])
   //  pv->setButtonRun(static_pointer_cast<iEventClass,View>(pv));
 
     pv->setCalculateCommand(pvm->getCalculateCommand());
+    pv->setRedoCommand(pvm->getRedoCommand());
+    pv->setUndoCommand(pvm->getUndoCommand());
     pvm->setPoints(pm->getPoints());
     pv->setPoints(pvm->getPoints());
 

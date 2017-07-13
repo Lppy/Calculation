@@ -2,6 +2,8 @@
 #define VIEWMODEL_H
 #include "Common/Notification.h"
 #include "Command/CalculateCommand.h"
+#include "Command/RedoCommand.h"
+#include "Command/UndoCommand.h"
 #include "Model/Model.h"
 #include <memory>
 
@@ -24,15 +26,19 @@ public:
     void setOutputString(shared_ptr<QString> out);
 
     void Calculate(string &in);
+    void Redo();
+    void Undo();
 
     shared_ptr<iCommand> getCalculateCommand();
+    shared_ptr<iCommand> getRedoCommand();
+    shared_ptr<iCommand> getUndoCommand();
 
     ~ViewModel(){}
 private:
     shared_ptr<Model> pm;
     shared_ptr<QString> in, out;
     shared_ptr<Data> points;
-    shared_ptr<iCommand> calculateCommand;
+    shared_ptr<iCommand> calculateCommand,redoCommand,undoCommand;
 };
 
 #endif // VIEWMODEL_H

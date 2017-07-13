@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <QString>
 
 using namespace std;
 typedef pair<double,double> Point;
@@ -33,6 +34,24 @@ public:
         return point;
     }
     ~Data(){}
+};
+
+class Action{
+private:
+    Data data;
+    QString str;
+public:
+    enum ActionType {POINT,STRING} type;
+    Action(){}
+    Action(const Data& d):data(d),type(POINT){}
+    Action(const QString& s):str(s),type(STRING){}
+    ~Action(){}
+    void setData(const Data& d){data=d;}
+    void setStr(const QString& s){str=s;}
+    Data getData() const{return data;}
+    QString getStr() const{return str;}
+    void setActionType(ActionType t){type=t;}
+    ActionType& getType(){return type;}
 };
 
 class Param{

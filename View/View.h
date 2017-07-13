@@ -32,16 +32,20 @@ public:
     shared_ptr<QString>& getInputString();
 
     void refreshDisplay();
-    void execEvent();
+    void execRun();
+    void execRedo();
+    void execUndo();
     void show();
     void update(const string& type);
     void setCalculateCommand(shared_ptr<iCommand> command);
+    void setRedoCommand(shared_ptr<iCommand> command);
+    void setUndoCommand(shared_ptr<iCommand> command);
 private:
     Ui::View *ui;
     shared_ptr<QString> in_ptr, out_ptr;
     shared_ptr<Data> points;
-    shared_ptr<iCommand> calculateCommand;
-    iQPushButton* button;
+    shared_ptr<iCommand> calculateCommand,redoCommand,undoCommand;
+    iQPushButton *buttonRun,*buttonUndo,*buttonRedo;
     void setWidget();
 };
 
