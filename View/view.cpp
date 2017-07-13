@@ -45,6 +45,11 @@ void View::setWidget()
 void View::show()
 {
     setWidget();
+    button = new iQPushButton(this, shared_ptr<View>(this));
+    button->resize(80,35);
+    button->move(850,620);
+    button->setText("RUN");
+    button->show();
     QMainWindow::show();
 }
 
@@ -57,6 +62,7 @@ void View::setOutputString(shared_ptr<QString> out)
     out_ptr = out;
 }
 
+/*
 void View::setButtonRun(shared_ptr<iEventClass> iE)
 {
     button = new iQPushButton(this, shared_ptr<iEventClass>(this), iE);
@@ -64,7 +70,7 @@ void View::setButtonRun(shared_ptr<iEventClass> iE)
     button->move(850,620);
     button->setText("RUN");
     button->show();
-}
+}*/
 
 void View::refreshDisplay()
 {

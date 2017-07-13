@@ -27,6 +27,7 @@ public:
     Proxy_Notification(){}
     ~Proxy_Notification(){}
     void notify(const string& type){
+        cout<<"notify"<<endl;
         for(auto it=m_array.begin();it!=m_array.end();it++)
             (*it)->update(type);
     }

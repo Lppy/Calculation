@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     pvm->setOutputString(pm->getRes());
     pv->setOutputString(pvm->getOutputString());
 
-    pv->setButtonRun(static_pointer_cast<iEventClass,View>(pv));
+  //  pv->setButtonRun(static_pointer_cast<iEventClass,View>(pv));
 
     pv->setCalculateCommand(pvm->getCalculateCommand());
     pvm->setPoints(pm->getPoints());

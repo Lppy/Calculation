@@ -5,36 +5,20 @@
 #include <QPushButton>
 #include <memory>
 using namespace std;
-
-class iEventClass //event's abstract class
-{
-public:
-    virtual void execEvent() = 0;
-    virtual void refreshDisplay(){}
-    virtual ~iEventClass() = 0;
-};
-
-class iDataClass //data's abstract class
-{
-public:
-    virtual ~iDataClass() = 0;
-
-    enum { Brokenline, Curve } dataType;
-};
+class View;
 
 class iQPushButton : public QPushButton
 {
     Q_OBJECT
 
 public:
-    explicit iQPushButton(QWidget *parent, shared_ptr<iEventClass> iEV, shared_ptr<iEventClass> iEVM);
+    explicit iQPushButton(QWidget *parent, shared_ptr<View> pv);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
 private:
-    shared_ptr<iEventClass> iEventForView;
-    shared_ptr<iEventClass> iEventForViewModel;
+    shared_ptr<View> pv;
 };
 
 #endif // IQLABLE_H

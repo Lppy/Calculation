@@ -1,6 +1,5 @@
 #ifndef PARAMS_H
 #define PARAMS_H
-#include "iqwidget.h"
 #include "./Model/Function/matrix.h"
 #include <vector>
 #include <memory>
@@ -9,6 +8,14 @@
 
 using namespace std;
 typedef pair<double,double> Point;
+
+class iDataClass //data's abstract class
+{
+public:
+    virtual ~iDataClass() = 0;
+
+    enum { Brokenline, Curve } dataType;
+};
 
 class Data : public iDataClass{
 private:

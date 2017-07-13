@@ -17,7 +17,6 @@ class View;
 }
 
 class View : public QMainWindow,
-             public iEventClass,
              public INotification
 {
     Q_OBJECT
@@ -28,7 +27,7 @@ public:
 
     void setInputString(shared_ptr<QString> in);
     void setOutputString(shared_ptr<QString> out);
-    void setButtonRun(shared_ptr<iEventClass> iE);
+ //   void setButtonRun(shared_ptr<iEventClass> iE);
     void setPoints(shared_ptr<Data> p);
     shared_ptr<QString>& getInputString();
 

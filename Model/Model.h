@@ -6,10 +6,12 @@
 #include "Function/ODE.h"
 #include "Function/Root_of_Polynomial.h"
 #include "Function/Cond.h"
+#include <QString>
 #include <memory>
 //#include "Function/eigenvalue.h"
 //#include "Function/curve_fitting.h"
 //#include "Function/root_of_matrix.h"
+using namespace std;
 
 class Model:public Proxy_Notification
 {

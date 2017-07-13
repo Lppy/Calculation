@@ -5,7 +5,7 @@
 #include "Model/Model.h"
 #include <memory>
 
-class ViewModel: public Proxy_Notification, //public iEventClass,
+class ViewModel: public Proxy_Notification,
                  public INotification
 {
 public:
