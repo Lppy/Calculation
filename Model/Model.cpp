@@ -219,6 +219,20 @@ void Model::getMatrixRoot(Matrix a)
 
 }
 
+void Model::CurveFitting(double* x, double* y, size_t length, int PolyN)
+{
+    Fit fit;
+    fit.polyfit(x, y, length,PolyN, true);
+    double* dres;
+    fit.getFactor(dres);
+    *(this->res)=QString::fromStdString(double2string(&dres));
+    DoneList.push_back(Action(*res));
+    pos++;
+    string s="text";
+    this->notify(s);
+
+
+}
 string Model::double2string(double res)
 {
     ostringstream os;
