@@ -178,8 +178,22 @@ void Model::getIntegral(double(*f)(double x), const double a, const double b)
 
 void Model::getEigenvalue(Matrix a)
 {
-
+    Eigenvalue eigen;
+	double* tempresult;
+	int n;
+	bool t;
+	n = a.getCol();
+	double* dres;
+	t = eigen.MatrixEigenValue(a, n, 1000, dres);
+	if (t) {
+		*(this->res) = QString::fromStdString(double2string(&dres));
+        DoneList.push_back(Action(*res));
+        pos++;
+		string s = "text";
+		this->notify(s);
 }
+    
+
 
 void Model::getMatrixRoot(Matrix a)
 {
