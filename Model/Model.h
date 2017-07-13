@@ -85,5 +85,13 @@ public:
     shared_ptr<Data>& getPoints();
     shared_ptr<QString>& getRes();
     string double2string(double res);
+
+private:
+    bool is_legal_param(const string&);
+    void shell_save_matrix(string&, istringstream&);
+    void shell_derivative(string&);
+    void shell_integrate(string&);
+    void resolve_polynomial(string&);
+    void shell_eig(string&);
 };
 
