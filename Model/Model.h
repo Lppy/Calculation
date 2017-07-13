@@ -16,6 +16,9 @@
 //#include "Function/root_of_matrix.h"
 using namespace std;
 
+extern map<string, Matrix> matrix_table;
+extern double coefficient[10];
+
 class Model:public Proxy_Notification
 {
 protected:
