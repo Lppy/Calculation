@@ -46,14 +46,6 @@ void SubView::paintBrokenline()
     customPlot->xAxis->setRange(minX, maxX);
     customPlot->yAxis->setRange(minY, maxY);
 
-    /*
-
-    //customPlot->legend->setVisible(true); //图示
-    //customPlot->legend->setBrush(QBrush(QColor(255,255,255,150)));
-    //customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
-
-    */
-
     customPlot->resize(500,500);
     customPlot->show();
 }
