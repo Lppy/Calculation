@@ -87,42 +87,6 @@ public:
     }
 
     ~Matrix() {}
-
-    Matrix operator+(Matrix &m) {
-        Matrix tmp(row, col);
-        if (row != m.row || col != m.col)
-            throw matrix_error("can't add two matrix with different size");
-        for (int i = 0; i < row; i++)
-            for (int j = 0; j < col; j++)
-                tmp.entry[i][j] = entry[i][j] + m.entry[i][j];
-        return tmp;
-    }
-
-    Matrix operator-(Matrix &m) {
-        Matrix tmp(row, col);
-        if (row != m.row || col != m.col)
-            throw matrix_error("can't add two matrix with different size");
-        for (int i = 0; i < row; i++)
-            for (int j = 0; j < col; j++)
-                tmp.entry[i][j] = entry[i][j] - m.entry[i][j];
-        return tmp;
-    }
-
-    Matrix operator*(Matrix &m) {
-        Matrix tmp(row, col);
-        if (col != m.row)
-            throw matrix_error("size not satisfied");
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                double sum = 0;
-                for (int k = 0; k < col; k++) {
-                    sum += entry[i][k] * m.entry[k][j];
-                }
-                tmp.entry[i][j] = sum;
-            }
-        }
-        return tmp;
-    }
 };
 
 
