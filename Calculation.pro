@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     ViewModel/Command/CalculateCommand.cpp \
     ViewModel/Command/RedoCommand.cpp \
     ViewModel/Command/UndoCommand.cpp \
-    Model/Function/baseInterpreter.cpp
+    Model/Function/baseInterpreter.cpp \
+    Model/Function/Cubic_Spline.cpp
 
 HEADERS  += \
     View/View.h \
@@ -60,7 +61,8 @@ HEADERS  += \
     ViewModel/Command/CalculateCommand.h \
     ViewModel/Command/RedoCommand.h \
     ViewModel/Command/UndoCommand.h \
-    Model/Function/baseInterpreter.h
+    Model/Function/baseInterpreter.h \
+    Model/Function/Cubic_Spline.h
 
 FORMS    += \
     View.ui

@@ -3,6 +3,7 @@
 #include <cstdio>
 map<string, Matrix> matrix_table;
 double coefficient[10];
+double coefficient2[10];
 
 Model::Model()
 {
@@ -17,18 +18,18 @@ Model::~Model()
 
 //for test
 double Model::f(double x){
-    return x;
+    return poly(x,coefficient);
 }
 
 //for test
 double Model::ff(double t,double w){
-    return w-t*t+1;
+    return poly(w,coefficient)+poly(t,coefficient2);
 }
 
-double Model::poly(double x){
+double Model::poly(double x,double coe[]){
     double pow=1,res=0;
     for(int i=0;i<10;i++){
-        res+=coefficient[i]*pow;
+        res+=coe[i]*pow;
         pow*=x;
     }
     return res;
@@ -49,21 +50,38 @@ void Model::Calculate(string &in){
     AA[0][0]=1;AA[0][1]=1;AA[1][0]=2;AA[1][1]=3;
     bb[0][0]=2;bb[1][0]=5;
     Matrix A(AA),b(bb);
+    vector<Point> tp;
+    for(int i=0;i<3;i++){
+        tp.push_back(Point((double)5*i,(double)(i-20*i+2)));
+        cout<<"tp:"<<tp[i].first<<" "<<tp[i].second<<endl;
+    }
     //data for test
     memset(coefficient,0,10*sizeof(double));  //clear coefficient
+    memset(coefficient2,0,10*sizeof(double));
     if(in.substr(0,12)=="solve Poly"){
         string polys=in.substr(6);
         resolve_polynomial(polys);
         getPolynomialRoot(MAXD,coefficient,(double)0.01);
+    } else if (in.substr(0, 4) == "d/dx") {
+        // 求导
+        shell_derivative(in);
     }
     else if(in.substr(0,12)=="solve Matrix"){
-        getMatrixRoot(A,b);
+        size_t equal=in.find("x=");
+        string aa(1,in[equal-1]);
+        string bb(1,in[equal+2]);
+        cout<<"in Model:solve Matrix "<<aa<<" "<<bb<<endl;
+        if(matrix_table.find(aa)==matrix_table.end()||matrix_table.find(bb)==matrix_table.end())
+            throw logic_error("no such matrix");
+        Matrix AA=matrix_table[aa],BB=matrix_table[bb];
+        cout<<"in Model::before getMatrixRoot"<<endl;
+        getMatrixRoot(AA,BB);
         cout<<res->toStdString()<<endl;
     }
-    else if(in.substr(0,3)=="int"){
+    else if(in.substr(0,3)=="Int"){
         double lower,upper;
         shell_integrate(in,lower,upper);
-        getIntegral(poly,lower,upper,(double)0.01);
+        getIntegral(f,lower,upper,(double)0.01);
     }
     else if(in.substr(0,5)=="Cond2"){
         string::size_type start;
@@ -83,10 +101,42 @@ void Model::Calculate(string &in){
             cout<<"in Model:before CondInf "<<m.getRow()<<" "<<m.getCol()<<endl;
             getCond_inf(m);
         }
+    } else {
+        baseInterpreter calc(in);
+        calc.output(cout);
     }
+<<<<<<< HEAD
+    //dy/dt=y^2-t^4+y^3-t+100 (0,1) y(0)=0
+    else if(in.substr(0,5)=="dy/dt"){
+        double lower,upper,ya;
+        shell_ode(in,lower,upper,ya);
+        int step=(upper-lower)/0.2;
+        getODE(ff,lower,upper,step,ya);
+    }
+    else if(in.substr(0,5)=="Curve"){
+       // string str=in.substr(5);
+        vector<Point> p=tp;
+        getCubicSpline(p,2);
+    }
+    else if(in.substr(0,10)=="BrokenLine"){
+        vector<Point> p=tp;
+        getBrokenLine(p);
+    }
+    else if(in.find("[") != in.npos){
+        size_t start = in.find("[");
+        istringstream is(in.substr(start + 1));
+        cout<<"in model::before shell_save_matrix"<<endl;
+        shell_save_matrix(in,is);
+    }
+    else {
+        baseInterpreter calc(in);
+        calc.output(cout);
+    }
+
+=======
    // else if(in.substr()=="dy")
-    else
-        getODE(ff,(double)0,(double)5,(double)20,(double)0.5);
+//        getODE(ff,(double)0,(double)5,(double)20,(double)0.5);
+>>>>>>> 4f9b59636687a9c4fa3c54dcfec151478a26accb
 }
 
 void Model::Redo(){
@@ -195,6 +245,7 @@ void Model::getODE(double(*f)(double t0, double w0), double a, double b, const i
     ODE ode;
     vector<Point> p = ode.ode45(f, a, b, step, ya);
     points->setPoint(p);
+    points->setBroken(false);
     DoneList.push_back(Action(p));
     pos++;
     string s="graph";
@@ -251,6 +302,9 @@ void Model::getEigenvalue(Matrix a)
     
 void Model::getMatrixRoot(Matrix a, Matrix b)
 {
+    cout<<"in Mode::getMatrixRootl"<<endl;
+    a.print();
+    b.print();
     string dres;
     if (a.isSquare()) {
         double aa[MAXM][MAXM],bb[MAXM];
@@ -271,7 +325,32 @@ void Model::getMatrixRoot(Matrix a, Matrix b)
     pos++;
     string s="text";
     this->notify(s);
+}
 
+
+void Model::getCubicSpline(vector<Point> p,int Type){
+    Cubic_Spline cs;
+    vector<Point> pp = cs.cubic_Spline(p,Type);
+    points->setPoint(pp);
+    points->setBroken(false);
+    DoneList.push_back(Action(pp));
+    pos++;
+    string s="graph";
+    cout<<s<<endl;
+    vector<Point> pdata=points->getPoint();
+    for(auto it=pdata.begin();it!=pdata.end();it++)
+        cout<<"p "<<it->first<<" "<<it->second<<endl;
+    this->notify(s);
+}
+
+void Model::getBrokenLine(vector<Point> p){
+    points->setPoint(p);
+    points->setBroken(true);
+    vector<Point> pdata=points->getPoint();
+    for(auto it=pdata.begin();it!=pdata.end();it++)
+        cout<<"p "<<it->first<<" "<<it->second<<endl;
+    string s="graph";
+    this->notify(s);
 }
 
 /*
@@ -327,15 +406,17 @@ bool Model::is_legal_param(const string &param_name) {
 
 Matrix Model::shell_save_matrix(string &in, istringstream &is) {
     // 有矩阵定义标志
-    cout<<"1";
+    cout<<"~1~"<<endl;
     string param_name;
     int row_num = 1, i;
     char ch;
     double tmp_num;
 
-    param_name = in.substr(0, in.find('='));
+    cout<<"~2~";
+    param_name = in.substr(0, in.find('='));    
     if (!is_legal_param(param_name))
         throw calc_error("illegal param name");
+
     // 解析矩阵
     // a = [ 1 2 3 4 5; 2 3 4 5 6; 3 4 5 6 7; 4 5 6 7 8]
     // fda921fs=[1,2,3;2,4,5]
@@ -365,6 +446,7 @@ Matrix Model::shell_save_matrix(string &in, istringstream &is) {
     cout<<"in Matrix "<<m.getRow()<<" "<<m.getCol()<<endl;
     m.print();
     matrix_table[param_name] = m;
+    cout<<"in Matrix "<<param_name<<endl;
     return m;
 }
 
@@ -404,20 +486,31 @@ void Model::resolve_polynomial(string &func_str) {
     char ch;
 
     while (is.get(ch)) {
+        if (isspace(ch))
+            continue;
         if (isdigit(ch) || ch == '-') {
             is.putback(ch);
             is >> co;
-            if (is.get(ch) && ch != 'x' && ch != '*') {
+        } else if (ch == 'x') {
+            co = 1;
+        } else {
+            throw calc_error("illegal char");
+        }
+        is.get(ch);
+        switch (ch) {
+            case 'x':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient[exp] = co;
+                break;
+            default:
                 coefficient[0] = co;
                 break;
-            }
-            while (is.get(ch) || ch == '-')
-                if (isdigit(ch)) {
-                    is.putback(ch);
-                    is >> exp;
-                    coefficient[exp] = co;
-                    break;
-                }
         }
     }
 }
@@ -435,14 +528,84 @@ void Model::shell_eig(string &in) {
         throw calc_error("matrix not found");
 }
 
-void Model::shell_cond2(string &in){
+void Model::shell_equation(string &in) {
+    // dy/dt=y^2-t^4+y^3-t+100
+    string func_str = in.substr(6, in.length() - 6);
+    istringstream is(func_str);
+    double co;
+    int exp;
+    char ch;
 
+    while (is.get(ch)) {
+        if (isspace(ch) || ch == '+')
+            continue;
+        if (isdigit(ch)) {
+            is.putback(ch);
+            is >> co;
+        } else if (ch == '-') {
+            is.get(ch);
+            if (ch == 'y' || ch == 't') {
+                is.putback(ch);
+                co = -1;
+            } else {
+                is.putback(ch);
+                is >> co;
+                co = -co;
+            }
+        } else if (ch == 'y' || ch == 't') {
+            is.putback(ch);
+            co = 1;
+        } else {
+            throw calc_error("illegal char");
+        }
+        is.get(ch);
+        switch (ch) {
+            case 'y':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient[exp] = co;
+                break;
+            case 't':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient2[exp] = co;
+                break;
+            default:
+                coefficient[0] = co;
+                break;
+        }
+    }
+    // to be done
+    // 参数已解析完
 }
 
-void Model::shell_condInf(string &in){
+void Model::shell_ode(string& in,double& lower,double& upper,double& ya){
+    size_t lbrack=in.find_first_of("(");  //(a,b)
+    size_t comma=in.find_first_of(",");
+    size_t rbrack=in.find_first_of(")");
+    size_t equal=in.find_last_of("=");
+    if(lbrack==string::npos||comma==string::npos||rbrack==string::npos)
+        throw gram_error("need boundary limit in integration");
+    string ode=in.substr(0,lbrack);
+    string lowstr=in.substr(lbrack+1,comma-lbrack-1);
+    string upstr=in.substr(comma+1,rbrack-comma-1);
+    string yastr=in.substr(equal+1);
 
+    lower=string2double(lowstr);
+    upper=string2double(upstr);
+    ya=string2double(yastr);
+    shell_equation(ode);
 }
-
 
 void Model::main() {
     char buff[256];
@@ -481,3 +644,67 @@ void Model::main() {
     }
 }
 
+<<<<<<< HEAD
+
+=======
+void Model::shell_equation(string &in) {
+    // dy/dt=y^2-t^4+y^3-t+100
+    string func_str = in.substr(6, in.length() - 6);
+    istringstream is(func_str);
+    double co;
+    int exp;
+    char ch;
+
+    while (is.get(ch)) {
+        if (isspace(ch) || ch == '+')
+            continue;
+        if (isdigit(ch)) {
+            is.putback(ch);
+            is >> co;
+        } else if (ch == '-') {
+            is.get(ch);
+            if (ch == 'y' || ch == 't') {
+                is.putback(ch);
+                co = -1;
+            } else {
+                is.putback(ch);
+                is >> co;
+                co = -co;
+            }
+        } else if (ch == 'y' || ch == 't') {
+            is.putback(ch);
+            co = 1;
+        } else {
+            throw calc_error("illegal char");
+        }
+        is.get(ch);
+        switch (ch) {
+            case 'y':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient[exp] = co;
+                break;
+            case 't':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient2[exp] = co;
+                break;
+            default:
+                coefficient[0] = co;
+                break;
+        }
+    }
+    // to be done
+    // 参数已解析完
+}
+>>>>>>> 4f9b59636687a9c4fa3c54dcfec151478a26accb

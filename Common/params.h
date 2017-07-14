@@ -15,7 +15,7 @@ class iDataClass //data's abstract class
 public:
     virtual ~iDataClass() = 0;
 
-    enum { Brokenline, Curve } dataType;
+    enum DataType{ Brokenline, Curve } dataType;
 };
 
 class Data : public iDataClass{
@@ -26,6 +26,10 @@ public:
     Data(vector<Point>& point):point(point)
     {
        dataType=Curve;
+    }
+    void setBroken(bool flag){
+        if(flag) dataType=Brokenline;
+        else dataType=Curve;
     }
     void setPoint(vector<Point>& p){
         point=p;
