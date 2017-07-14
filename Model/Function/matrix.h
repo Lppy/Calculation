@@ -92,6 +92,7 @@ public:
     bool to1DArray(double b[]){
         for(int i=0;i<row;i++)
             b[i]=entry[i][0];
+        return true;
     }
     vector<vector<double>> getEntry() const{
         return entry;

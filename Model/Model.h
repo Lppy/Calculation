@@ -48,6 +48,7 @@ private:
     void shell_eig(string&);
     void shell_cond2(string&);
     void shell_condInf(string&);
+    void shell_equation(string&);
     static double poly(double x);
     string double2string(double res);
     double string2double(string str);
