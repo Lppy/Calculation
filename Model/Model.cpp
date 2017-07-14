@@ -62,6 +62,9 @@ void Model::Calculate(string &in){
         string polys=in.substr(6);
         resolve_polynomial(polys);
         getPolynomialRoot(MAXD,coefficient,(double)0.01);
+    } else if (in.substr(0, 4) == "d/dx") {
+        // 求导
+        shell_derivative(in);
     }
     else if(in.substr(0,12)=="solve Matrix"){
         size_t equal=in.find("x=");
@@ -98,7 +101,11 @@ void Model::Calculate(string &in){
             cout<<"in Model:before CondInf "<<m.getRow()<<" "<<m.getCol()<<endl;
             getCond_inf(m);
         }
+    } else {
+        baseInterpreter calc(in);
+        calc.output(cout);
     }
+<<<<<<< HEAD
     //dy/dt=y^2-t^4+y^3-t+100 (0,1) y(0)=0
     else if(in.substr(0,5)=="dy/dt"){
         double lower,upper,ya;
@@ -126,6 +133,10 @@ void Model::Calculate(string &in){
         calc.output(cout);
     }
 
+=======
+   // else if(in.substr()=="dy")
+//        getODE(ff,(double)0,(double)5,(double)20,(double)0.5);
+>>>>>>> 4f9b59636687a9c4fa3c54dcfec151478a26accb
 }
 
 void Model::Redo(){
@@ -475,20 +486,31 @@ void Model::resolve_polynomial(string &func_str) {
     char ch;
 
     while (is.get(ch)) {
+        if (isspace(ch))
+            continue;
         if (isdigit(ch) || ch == '-') {
             is.putback(ch);
             is >> co;
-            if (is.get(ch) && ch != 'x' && ch != '*') {
+        } else if (ch == 'x') {
+            co = 1;
+        } else {
+            throw calc_error("illegal char");
+        }
+        is.get(ch);
+        switch (ch) {
+            case 'x':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient[exp] = co;
+                break;
+            default:
                 coefficient[0] = co;
                 break;
-            }
-            while (is.get(ch) || ch == '-')
-                if (isdigit(ch)) {
-                    is.putback(ch);
-                    is >> exp;
-                    coefficient[exp] = co;
-                    break;
-                }
         }
     }
 }
@@ -622,4 +644,67 @@ void Model::main() {
     }
 }
 
+<<<<<<< HEAD
 
+=======
+void Model::shell_equation(string &in) {
+    // dy/dt=y^2-t^4+y^3-t+100
+    string func_str = in.substr(6, in.length() - 6);
+    istringstream is(func_str);
+    double co;
+    int exp;
+    char ch;
+
+    while (is.get(ch)) {
+        if (isspace(ch) || ch == '+')
+            continue;
+        if (isdigit(ch)) {
+            is.putback(ch);
+            is >> co;
+        } else if (ch == '-') {
+            is.get(ch);
+            if (ch == 'y' || ch == 't') {
+                is.putback(ch);
+                co = -1;
+            } else {
+                is.putback(ch);
+                is >> co;
+                co = -co;
+            }
+        } else if (ch == 'y' || ch == 't') {
+            is.putback(ch);
+            co = 1;
+        } else {
+            throw calc_error("illegal char");
+        }
+        is.get(ch);
+        switch (ch) {
+            case 'y':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient[exp] = co;
+                break;
+            case 't':
+                is.get(ch);
+                if (ch == '^')
+                    is >> exp;
+                else {
+                    exp = 1;
+                    is.putback(ch);
+                }
+                coefficient2[exp] = co;
+                break;
+            default:
+                coefficient[0] = co;
+                break;
+        }
+    }
+    // to be done
+    // 参数已解析完
+}
+>>>>>>> 4f9b59636687a9c4fa3c54dcfec151478a26accb
