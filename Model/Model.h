@@ -47,16 +47,9 @@ private:
     void shell_integrate(string&,double&,double&);
     void resolve_polynomial(string&);
     void shell_eig(string&);
-<<<<<<< HEAD
     void shell_equation(string&);
     void shell_ode(string&,double&,double&,double&);
 
-=======
-    void shell_cond2(string&);
-    void shell_condInf(string&);
-    void shell_equation(string&);
-    static double poly(double x);
->>>>>>> 4f9b59636687a9c4fa3c54dcfec151478a26accb
     string double2string(double res);
     double string2double(string str);
 
@@ -116,6 +109,8 @@ private:
 //  void CurveFitting(double* x, double* y, size_t length, int PolyN);*/
     //画折线
     void getBrokenLine(vector<Point> p);
+    //画曲线
+    void getCurve(vector<Point> p);
 
 };
 
