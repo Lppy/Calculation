@@ -3,5 +3,7 @@
         <file>Image/background.jpg</file>
         <file>Image/logo.ico</file>
         <file>Image/logo.rc</file>
+        <file>Image/redo.png</file>
+        <file>Image/undo.png</file>
     </qresource>
 </RCC>

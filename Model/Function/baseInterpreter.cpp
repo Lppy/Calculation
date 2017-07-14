@@ -5,6 +5,7 @@
 #include <cmath>
 #include "baseInterpreter.h"
 
+map<string, double> symbol_table;
 
 void baseInterpreter::output(ostream &os) {
      while (*input) {

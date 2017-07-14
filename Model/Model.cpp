@@ -1,6 +1,8 @@
 #include "Model.h"
 #include <sstream>
-
+#include <cstdio>
+map<string, Matrix> matrix_table;
+double coefficient[10];
 
 Model::Model()
 {
@@ -23,18 +25,64 @@ double Model::ff(double t,double w){
     return w-t*t+1;
 }
 
+double Model::poly(double x){
+    double pow=1,res=0;
+    for(int i=0;i<10;i++){
+        res+=coefficient[i]*pow;
+        pow*=x;
+    }
+    return res;
+}
+
 void Model::Calculate(string &in){
     //解释器处理字符串in，并调用model中的计算函数
     cout<<"in Model:Calculate "<<in<<endl;
     int n=2;
     double c[3]={1,2,1};
     double eps=0.1;
+    memset(coefficient,0,10*sizeof(double));  //clear coefficient
     if(in=="1")
         getPolynomialRoot(n,c,eps);
     else if(in=="2")
         getIntegral(f,(double)1,(double)2,(double)0.0001);
     else if(in=="3")
         getODE(ff,(double)0,(double)2,(double)20,(double)0.5);
+    else if(in.substr(0,12)=="solve Poly"){
+        string polys=in.substr(6);
+        resolve_polynomial(polys);
+        cout<<"resolve test"<<endl;
+        for(int i=9;i>=0;i--)
+            cout<<coefficient[i]<<" ";
+        cout<<endl;
+        getPolynomialRoot(MAXD,coefficient,(double)0.01);
+    }
+    else if(in.substr(0,12)=="solve Matrix"){
+        vector<vector<double>> AA,bb;
+        AA.resize(2);AA[0].resize(2);AA[1].resize(2);bb.resize(2);
+        bb[0].resize(1);bb[1].resize(1);
+        AA[0][0]=1;AA[0][1]=1;AA[1][0]=2;AA[1][1]=3;
+        bb[0][0]=2;bb[1][0]=5;
+        Matrix A(AA),b(bb);
+        getMatrixRoot(A,b);
+        cout<<res->toStdString()<<endl;
+    }
+    /*
+    else if(in.substr(0,3)=="int"){
+        size_t lowerb=in.substr(4).find("from");
+        size_t upperb=in.substr(lowerb).find("to");
+        if(lowerb==string::npos||upperb==string::npos)
+            throw gram_error("need boundary limit in integration");
+        string polys=in.substr(6,lowerb);
+        //string bound=in.substr(boundstart);
+        int upper,lower;
+
+        resolve_polynomial(polys);
+        cout<<"resolve test"<<endl;
+        for(int i=9;i>=0;i--)
+            cout<<coefficient[i]<<" ";
+        cout<<endl;
+        //getIntegral(poly, const double a, const double b, const double eps);
+    }*/
     else
         getODE(ff,(double)0,(double)5,(double)20,(double)0.5);
 }
@@ -176,6 +224,7 @@ void Model::getIntegral(double(*f)(double x), const double a, const double b)
     this->notify(s);
 }
 
+/*
 void Model::getEigenvalue(Matrix a)
 {
     Eigenvalue eigen;
@@ -186,26 +235,29 @@ void Model::getEigenvalue(Matrix a)
 	double* dres;
 	t = eigen.MatrixEigenValue(a, n, 1000, dres);
 	if (t) {
-		*(this->res) = QString::fromStdString(double2string(&dres));
+        *(this->res) = QString::fromStdString(double2string(&dres));
         DoneList.push_back(Action(*res));
         pos++;
 		string s = "text";
 		this->notify(s);
+     }
+    else
+        cout<<"no such eigenvalue"<<endl;
 }
+*/
     
-
-
-void Model::getMatrixRoot(Matrix a)
+void Model::getMatrixRoot(Matrix a, Matrix b)
 {
     string dres;
     if (a.isSquare()) {
-        double aa[MAXM][MAXM],b[MAXM];
+        double aa[MAXM][MAXM],bb[MAXM];
         a.to2DArray(aa);
+        b.to1DArray(bb);
         LU lu;
-        lu.LU_decom(a.getCol(), aa, b);
+        lu.LU_decom(a.getCol(), aa, bb);
         dres = "[";
         for (int i = 0;i < a.getCol();i++)
-            dres += double2string(b[i]) + ",";
+            dres += double2string(bb[i]) + ",";
         dres.back() = ']';
     }
     else {
@@ -214,11 +266,12 @@ void Model::getMatrixRoot(Matrix a)
     *(this->res)=QString::fromStdString(dres);
     DoneList.push_back(Action(*res));
     pos++;
-    string s="MatrixRoot";
+    string s="text";
     this->notify(s);
 
 }
 
+/*
 void Model::CurveFitting(double* x, double* y, size_t length, int PolyN)
 {
     Fit fit;
@@ -230,15 +283,22 @@ void Model::CurveFitting(double* x, double* y, size_t length, int PolyN)
     pos++;
     string s="text";
     this->notify(s);
-
-
 }
+*/
+
 string Model::double2string(double res)
 {
     ostringstream os;
     if (os << res)
         return os.str();
     return "invalid conversion";
+}
+
+double Model::string2double(string str){
+    istringstream iss(str);
+    double  x;
+    if(iss >> x) return x;
+    else return 0.0;
 }
 
 shared_ptr<Data>& Model::getPoints(){

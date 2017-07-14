@@ -1,6 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class Matrix {
@@ -67,6 +68,11 @@ public:
         }
         return true;
     }
+    bool to1DArray(double b[]){
+        for(int i=0;i<row;i++)
+            b[i]=entry[i][0];
+    }
+
     ~Matrix(){}
 };
 

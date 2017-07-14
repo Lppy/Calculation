@@ -21,6 +21,11 @@ public:
     calc_error(const string &s) : logic_error(s) {}
 };
 
+class gram_error :public logic_error{
+public:
+    gram_error(const string &s) : logic_error(s) {}
+};
+
 class baseInterpreter {
 public:
     enum Token_value {
