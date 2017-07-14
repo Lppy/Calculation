@@ -3,6 +3,7 @@
 #include <cstdio>
 map<string, Matrix> matrix_table;
 double coefficient[10];
+double coefficient2[10];
 
 Model::Model()
 {
