@@ -5,13 +5,19 @@
 #include "Function/Integral.h"
 #include "Function/ODE.h"
 #include "Function/Root_of_Polynomial.h"
+//#include "Function/curve_fitting.h"
+#include "Function/baseInterpreter.h"
 #include "Function/Cond.h"
 #include <QString>
 #include <memory>
+#include <map>
 //#include "Function/eigenvalue.h"
 //#include "Function/curve_fitting.h"
 //#include "Function/root_of_matrix.h"
 using namespace std;
+
+extern map<string, Matrix> matrix_table;
+extern double coefficient[10];
 
 class Model:public Proxy_Notification
 {
@@ -23,13 +29,33 @@ protected:
 public:
 	Model();
 	~Model();
+    shared_ptr<Data>& getPoints();
+    shared_ptr<QString>& getRes();
+
+    void Calculate(string &in);
+    void Redo();
+    void Undo();
+
+private:
+    void main();
+
+    const int MAXD=9;   //maximum degree
+    bool is_legal_param(const string&);
+    Matrix shell_save_matrix(string&, istringstream&);
+    void shell_derivative(string&);
+    void shell_integrate(string&,double&,double&);
+    void resolve_polynomial(string&);
+    void shell_eig(string&);
+    void shell_cond2(string&);
+    void shell_condInf(string&);
+    static double poly(double x);
+    string double2string(double res);
+    double string2double(string str);
+
     //for test
     static double f(double x);
     //for test
     static double ff(double t,double w);
-    void Calculate(string &in);
-    void Redo();
-    void Undo();
     void DisplayAction(const Action& a);
     /*
     @param n   the degree of the polynomial
@@ -74,11 +100,11 @@ public:
     @note       using method of integral of composite Simpson  积分*/
     void getIntegral(double(*f)(double x), const double a, const double b);
     //求特征值
-    void getEigenvalue(Matrix a);
+//   void getEigenvalue(Matrix a);
     //求解AX=b
-    void getMatrixRoot(Matrix a);
-    shared_ptr<Data>& getPoints();
-    shared_ptr<QString>& getRes();
-    string double2string(double res);
+    void getMatrixRoot(Matrix a,Matrix b);
+    //曲线拟合
+//  void CurveFitting(double* x, double* y, size_t length, int PolyN);*/
+
 };
 

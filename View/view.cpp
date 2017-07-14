@@ -23,6 +23,7 @@ void View::setWidget()
 {
     this->setFixedSize(1000,800);
     this->setWindowTitle("Calculator");
+    this->setWindowOpacity(0.92);
 
     QPixmap background(":/Image/background.jpg");
     QPalette palette=this->palette();
@@ -30,11 +31,11 @@ void View::setWidget()
     this->setPalette(palette);
 
     QString buttonStyle = "QPushButton{background-color:black;\
-            color: white;   border-radius: 5px;  border: 1px groove gray;\
-            border-style: outset;}"
-            "QPushButton:hover{background-color:#dcdddd; color: black;}"
-            "QPushButton:pressed{background-color:white;\
-            border-style: inset; }";
+            color: white;   border-radius: 15px;  border: 1px groove gray;\
+    border-style: outset;}"
+    "QPushButton:hover{background-color:#dcdddd; color: black;}"
+    "QPushButton:pressed{background-color:white;\
+    border-style: inset; }";
 
     buttonRun = new iQPushButton(this, shared_ptr<View>(this));
     buttonRun->resize(80,35);
@@ -64,6 +65,13 @@ void View::setWidget()
     text->move(200,50);
     text->append(QString(in_ptr->data()));
     text->show();
+    QString textStyle= "QTextEdit {\
+            border: 1px solid rgb(111, 156, 207);"
+            "color: rgb(70, 71, 73);\
+            background: rgb(228, 228, 228);\
+    }";
+    text->setStyleSheet(textStyle);
+
 
     QTextBrowser* textBrowser = ui->textBrowser;
     textBrowser->setFontPointSize(15);
@@ -72,7 +80,9 @@ void View::setWidget()
     textBrowser->setText(QString(out_ptr->data()));
     textBrowser->setAlignment(Qt::AlignTop);
     textBrowser->show();
+    textBrowser->setStyleSheet(textStyle);
 }
+
 void View::show()
 {
     setWidget();
@@ -87,16 +97,6 @@ void View::setOutputString(shared_ptr<QString> out)
 {
     out_ptr = out;
 }
-
-/*
-void View::setButtonRun(shared_ptr<iEventClass> iE)
-{
-    button = new iQPushButton(this, shared_ptr<iEventClass>(this), iE);
-    button->resize(80,35);
-    button->move(850,620);
-    button->setText("RUN");
-    button->show();
-}*/
 
 void View::refreshDisplay()
 {

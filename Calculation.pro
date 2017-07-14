@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     ViewModel/ViewModel.cpp \
     ViewModel/Command/CalculateCommand.cpp \
     ViewModel/Command/RedoCommand.cpp \
-    ViewModel/Command/UndoCommand.cpp
+    ViewModel/Command/UndoCommand.cpp \
+    Model/Function/baseInterpreter.cpp
 
 HEADERS  += \
     View/View.h \
@@ -58,7 +59,8 @@ HEADERS  += \
     Model/Function/root_of_matrix.h \
     ViewModel/Command/CalculateCommand.h \
     ViewModel/Command/RedoCommand.h \
-    ViewModel/Command/UndoCommand.h
+    ViewModel/Command/UndoCommand.h \
+    Model/Function/baseInterpreter.h
 
 FORMS    += \
     View.ui

@@ -7,7 +7,6 @@
 #include "iqwidget.h"
 #include <memory>
 #include <QDebug>
-
 class iModel{
 
 };
@@ -15,13 +14,12 @@ class iModel{
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QFont f("Cambria");
+    QFont f("Comic Sans MS");
     a.setFont(f);
 
     shared_ptr<View> pv(new View());
     shared_ptr<Model> pm(new Model());
     shared_ptr<ViewModel> pvm(new ViewModel());
-
     pvm->setModel(pm);
 
     pm->AddNotification(static_pointer_cast<INotification,ViewModel>(pvm));
