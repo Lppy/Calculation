@@ -8,6 +8,7 @@
 //#include "Function/curve_fitting.h"
 #include "Function/baseInterpreter.h"
 #include "Function/Cond.h"
+#include "Function/Cubic_Spline.h"
 #include <QString>
 #include <memory>
 #include <map>
@@ -46,16 +47,16 @@ private:
     void shell_integrate(string&,double&,double&);
     void resolve_polynomial(string&);
     void shell_eig(string&);
-    void shell_cond2(string&);
-    void shell_condInf(string&);
-    static double poly(double x);
+    void shell_equation(string&);
+    void shell_ode(string&,double&,double&,double&);
+
     string double2string(double res);
     double string2double(string str);
 
-    //for test
+    static double poly(double x,double coe[]);
     static double f(double x);
-    //for test
     static double ff(double t,double w);
+
     void DisplayAction(const Action& a);
     /*
     @param n   the degree of the polynomial
@@ -104,7 +105,10 @@ private:
     //求解AX=b
     void getMatrixRoot(Matrix a,Matrix b);
     //曲线拟合
+    void getCubicSpline(vector<Point> p,int Type);
 //  void CurveFitting(double* x, double* y, size_t length, int PolyN);*/
+    //画折线
+    void getBrokenLine(vector<Point> p);
 
 };
 

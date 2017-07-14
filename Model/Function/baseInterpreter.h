@@ -26,6 +26,7 @@ public:
     gram_error(const string &s) : logic_error(s) {}
 };
 
+
 class baseInterpreter {
 public:
     enum Token_value {
