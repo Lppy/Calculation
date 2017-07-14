@@ -37,14 +37,18 @@ public:
     void Undo();
 
 private:
+    void main();
+
     const int MAXD=9;   //maximum degree
     bool is_legal_param(const string&);
-    void shell_save_matrix(string&, istringstream&);
+    Matrix shell_save_matrix(string&, istringstream&);
     void shell_derivative(string&);
-    void shell_integrate(string&);
+    void shell_integrate(string&,double&,double&);
     void resolve_polynomial(string&);
     void shell_eig(string&);
-    double poly(double x);
+    void shell_cond2(string&);
+    void shell_condInf(string&);
+    static double poly(double x);
     string double2string(double res);
     double string2double(string str);
 

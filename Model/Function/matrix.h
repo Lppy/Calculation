@@ -19,12 +19,17 @@ protected:
         return true;
     }
 public:
-    Matrix(){}
+    explicit Matrix(){}
+    Matrix(const Matrix& m){
+        const vector<vector<double>> mm=m.getEntry();
+        resize(mm.size(),mm[0].size());
+        assign(mm);
+    }
     Matrix(const vector<vector<double>>& mm){
         resize(mm.size(),mm[0].size());
         assign(mm);
     }
-    Matrix(int row, int col) :row(row),col(col),entry(row) {
+    Matrix(const int row, const int col) :row(row),col(col),entry(row) {
     //    entry.resize(row);
         for (int i = 0;i < row;i++)
             entry[i].resize(col);
@@ -53,7 +58,7 @@ public:
     int getRow() {
         return row;
     }
-    bool assign(vector<vector<double>> element) {
+    bool assign(const vector<vector<double>> element) {
         if (checkInputEntry(element)) {
             entry = element;
             return true;
@@ -72,7 +77,9 @@ public:
         for(int i=0;i<row;i++)
             b[i]=entry[i][0];
     }
-
+    vector<vector<double>> getEntry() const{
+        return entry;
+    }
     ~Matrix(){}
 };
 

@@ -160,3 +160,4 @@ baseInterpreter::Token_value baseInterpreter::get_token() {
             throw calc_error("bad token");
     }
 }
+

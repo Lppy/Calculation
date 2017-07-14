@@ -55,6 +55,7 @@ public:
     }
 
     void output(ostream &);
+    void main();
 
 private:
     double expr(bool);

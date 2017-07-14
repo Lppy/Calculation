@@ -35,54 +35,56 @@ double Model::poly(double x){
 }
 
 void Model::Calculate(string &in){
+
+   // main();
+
     //解释器处理字符串in，并调用model中的计算函数
     cout<<"in Model:Calculate "<<in<<endl;
     int n=2;
     double c[3]={1,2,1};
     double eps=0.1;
+    vector<vector<double>> AA,bb;
+    AA.resize(2);AA[0].resize(2);AA[1].resize(2);bb.resize(2);
+    bb[0].resize(1);bb[1].resize(1);
+    AA[0][0]=1;AA[0][1]=1;AA[1][0]=2;AA[1][1]=3;
+    bb[0][0]=2;bb[1][0]=5;
+    Matrix A(AA),b(bb);
+    //data for test
     memset(coefficient,0,10*sizeof(double));  //clear coefficient
-    if(in=="1")
-        getPolynomialRoot(n,c,eps);
-    else if(in=="2")
-        getIntegral(f,(double)1,(double)2,(double)0.0001);
-    else if(in=="3")
-        getODE(ff,(double)0,(double)2,(double)20,(double)0.5);
-    else if(in.substr(0,12)=="solve Poly"){
+    if(in.substr(0,12)=="solve Poly"){
         string polys=in.substr(6);
         resolve_polynomial(polys);
-        cout<<"resolve test"<<endl;
-        for(int i=9;i>=0;i--)
-            cout<<coefficient[i]<<" ";
-        cout<<endl;
         getPolynomialRoot(MAXD,coefficient,(double)0.01);
     }
     else if(in.substr(0,12)=="solve Matrix"){
-        vector<vector<double>> AA,bb;
-        AA.resize(2);AA[0].resize(2);AA[1].resize(2);bb.resize(2);
-        bb[0].resize(1);bb[1].resize(1);
-        AA[0][0]=1;AA[0][1]=1;AA[1][0]=2;AA[1][1]=3;
-        bb[0][0]=2;bb[1][0]=5;
-        Matrix A(AA),b(bb);
         getMatrixRoot(A,b);
         cout<<res->toStdString()<<endl;
     }
-    /*
     else if(in.substr(0,3)=="int"){
-        size_t lowerb=in.substr(4).find("from");
-        size_t upperb=in.substr(lowerb).find("to");
-        if(lowerb==string::npos||upperb==string::npos)
-            throw gram_error("need boundary limit in integration");
-        string polys=in.substr(6,lowerb);
-        //string bound=in.substr(boundstart);
-        int upper,lower;
-
-        resolve_polynomial(polys);
-        cout<<"resolve test"<<endl;
-        for(int i=9;i>=0;i--)
-            cout<<coefficient[i]<<" ";
-        cout<<endl;
-        //getIntegral(poly, const double a, const double b, const double eps);
-    }*/
+        double lower,upper;
+        shell_integrate(in,lower,upper);
+        getIntegral(poly,lower,upper,(double)0.01);
+    }
+    else if(in.substr(0,5)=="Cond2"){
+        string::size_type start;
+        if((start = in.find('[')) != in.npos){
+            istringstream is(in.substr(start + 1));
+            string entry=in.substr(6);
+            Matrix m=shell_save_matrix(entry,is);
+            getCond_2(m);
+        }
+    }
+    else if(in.substr(0,7)=="CondInf"){
+        string::size_type start;
+        if((start = in.find('[')) != in.npos){
+            istringstream is(in.substr(start + 1));
+            string entry=in.substr(8);
+            Matrix m=shell_save_matrix(entry,is);
+            cout<<"in Model:before CondInf "<<m.getRow()<<" "<<m.getCol()<<endl;
+            getCond_inf(m);
+        }
+    }
+   // else if(in.substr()=="dy")
     else
         getODE(ff,(double)0,(double)5,(double)20,(double)0.5);
 }
@@ -170,6 +172,7 @@ void Model::getCond_2(Matrix a)
 
 void Model::getCond_inf(Matrix a)
 {
+    cout<<"in Model::getCond_inf"<<endl;
     if (a.isSquare()) {
         double aa[MAXM][MAXM];
         a.to2DArray(aa);
@@ -322,8 +325,9 @@ bool Model::is_legal_param(const string &param_name) {
     return true;
 }
 
-void Model::shell_save_matrix(string &in, istringstream &is) {
+Matrix Model::shell_save_matrix(string &in, istringstream &is) {
     // 有矩阵定义标志
+    cout<<"1";
     string param_name;
     int row_num = 1, i;
     char ch;
@@ -356,9 +360,12 @@ void Model::shell_save_matrix(string &in, istringstream &is) {
         data.push_back(row);
     }
     // 存储矩阵
+    cout<<"in Matrix "<<data.size()<<" "<<data[0].size()<<endl;
     Matrix m(data);
+    cout<<"in Matrix "<<m.getRow()<<" "<<m.getCol()<<endl;
     m.print();
     matrix_table[param_name] = m;
+    return m;
 }
 
 void Model::shell_derivative(string &in) {
@@ -374,15 +381,20 @@ void Model::shell_derivative(string &in) {
     // 调用求导的函数:where就是所要求导的地方，f函数的系数已经解析完
 }
 
-void Model::shell_integrate(string &in) {
-    string::size_type end;
-    if ((end = in.find("x=")) == in.npos)
-        throw calc_error("must assign x");
-    string func_str = in.substr(4, end - 4);
-
-    resolve_polynomial(func_str);
-    // 解析x=1...10.3
-
+//int 1x^3+2x^1+2 (1,2)
+void Model::shell_integrate(string &in,double &lower,double &upper) {
+    size_t lbrack=in.find("(");
+    size_t comma=in.find(",");
+    size_t rbrack=in.find(")");
+    if(lbrack==string::npos||comma==string::npos||rbrack==string::npos)
+        throw gram_error("need boundary limit in integration");
+    string polys=in.substr(4,lbrack-4);
+    string lowstr=in.substr(lbrack+1,comma-lbrack-1);
+    string upstr=in.substr(comma+1,rbrack-comma-1);
+    cout<<"in model:int "<<polys<<" * "<<lowstr<<" * "<<upstr<<endl;
+    lower=string2double(lowstr);
+    upper=string2double(upstr);
+    resolve_polynomial(polys);
 }
 
 void Model::resolve_polynomial(string &func_str) {
@@ -422,3 +434,50 @@ void Model::shell_eig(string &in) {
     } else
         throw calc_error("matrix not found");
 }
+
+void Model::shell_cond2(string &in){
+
+}
+
+void Model::shell_condInf(string &in){
+
+}
+
+
+void Model::main() {
+    char buff[256];
+    while (true) {
+        try {
+            cout << ">>> ";
+            cin.getline(buff, 256);
+            string in(buff);
+            string::size_type start;
+            if ((start = in.find('[')) != in.npos) {
+                // 矩阵赋值
+                istringstream is(in.substr(start + 1));
+                shell_save_matrix(in, is);
+            } else if (in.substr(0, 4) == "d/dx") {
+                // 求导
+                shell_derivative(in);
+            } else if (in.substr(0, 3) == "int") {
+                // 积分
+                double lower,upper;
+                shell_integrate(in,lower,upper);
+            } else if(in.substr(0, 3) == "eig") {
+                // 特征值
+                shell_eig(in);
+            } else if (in.substr(0, 4) == "cond") {
+                // 条件数
+
+            } else {
+                // 普通计算器及变量赋值
+                baseInterpreter calc(in);
+                calc.output(cout);
+            }
+        } catch (calc_error e) {
+            cout << e.what() << endl;
+            return;
+        }
+    }
+}
+
