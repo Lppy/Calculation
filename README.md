@@ -13,16 +13,6 @@ A light and simple mini Matlab.
 * 蔡孜涵：Model, 测试
 * 陈星宇：Model, 测试
 
-#### Download
-
-###### Windows
-
-1. Download from [here][]
-
-   [here]: 10.189.247.225:8888/Project.rar
-
-2.  Unzip and run
-
 #### Usage
 
 1. 矩阵求特征值、特征向量   
