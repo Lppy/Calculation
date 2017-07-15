@@ -13,6 +13,13 @@ A light and simple mini Matlab.
 * 蔡孜涵：Model, 测试
 * 陈星宇：Model, 测试
 
+#### Download
+
+###### Windows
+
+1. Download from here <10.189.247.225:8888/Project.rar>
+2.  Unzip and run
+
 #### Usage
 
 1. 矩阵求特征值、特征向量   
@@ -69,10 +76,10 @@ A light and simple mini Matlab.
 8. 折线图
 
    ~~~
-   BrokenLine (0,1) (1,2) (9,10) (40,21) (6,3) (7,-10) (33,-19)
+   BrokenLine (0,1)  (9,10) (40,21) (6,3) (33,-19)
    ~~~
 
-9. 数值计算(待上线)
+9. 数值计算
 
    ~~~
    a=1
