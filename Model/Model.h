@@ -49,6 +49,7 @@ private:
     void shell_eig(string&);
     void shell_equation(string&);
     void shell_ode(string&,double&,double&,double&);
+    vector<Point> shell_point(string &in);
 
     string double2string(double res);
     double string2double(string str);
@@ -111,6 +112,8 @@ private:
     void getBrokenLine(vector<Point> p);
     //画曲线
     void getCurve(vector<Point> p);
+
+    void getCalcNumeric(double dres);
 
 };
 

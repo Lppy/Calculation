@@ -7,7 +7,7 @@ double coefficient2[10];
 
 Model::Model()
 {
-    this->res=shared_ptr<QString>(new QString("res"));
+    this->res=shared_ptr<QString>(new QString("Output here"));
     this->points=shared_ptr<Data>(new Data);
     pos=-1;
 }
@@ -41,26 +41,15 @@ void Model::Calculate(string &in){
 
     //解释器处理字符串in，并调用model中的计算函数
     cout<<"in Model:Calculate "<<in<<endl;
-    int n=2;
-    double c[3]={1,2,1};
-    double eps=0.1;
-    vector<vector<double>> AA,bb;
-    AA.resize(2);AA[0].resize(2);AA[1].resize(2);bb.resize(2);
-    bb[0].resize(1);bb[1].resize(1);
-    AA[0][0]=1;AA[0][1]=1;AA[1][0]=2;AA[1][1]=3;
-    bb[0][0]=2;bb[1][0]=5;
-    Matrix A(AA),b(bb);
-    vector<Point> tp;
-    for(int i=0;i<8;i++){
-        tp.push_back(Point((double)5*i,(double)(i*i*i-2*i+2)));
-        cout<<"tp:"<<tp[i].first<<" "<<tp[i].second<<endl;
-    }
     //data for test
     memset(coefficient,0,10*sizeof(double));  //clear coefficient
     memset(coefficient2,0,10*sizeof(double));
-    if(in.substr(0,12)=="solve Poly"){
+    if(in.substr(0,10)=="solve Poly"){
         string polys=in.substr(6);
         resolve_polynomial(polys);
+        for(int i=9;i>=0;i--)
+            cout<<coefficient[i]<<" ";
+        cout<<endl;
         getPolynomialRoot(MAXD,coefficient,(double)0.01);
     }
     else if(in.substr(0,12)=="solve Matrix"){
@@ -107,16 +96,18 @@ void Model::Calculate(string &in){
         getODE(ff,lower,upper,step,ya);
     }
     else if(in.substr(0,3)=="Fit"){
-       // string str=in.substr(5);
-        vector<Point> p=tp;
+        string str=in.substr(4);
+        vector<Point> p=shell_point(str);
         getCubicSpline(p,2);
     }
     else if(in.substr(0,5)=="Curve"){
-        vector<Point> p=tp;
+        string str=in.substr(6);
+        vector<Point> p=shell_point(str);
         getCurve(p);
     }
     else if(in.substr(0,10)=="BrokenLine"){
-        vector<Point> p=tp;
+        string str=in.substr(11);
+        vector<Point> p=shell_point(str);
         getBrokenLine(p);
     }
     else if(in.find("[") != in.npos){
@@ -127,7 +118,8 @@ void Model::Calculate(string &in){
     }
     else {
         baseInterpreter calc(in);
-        calc.output(cout);
+        double res=calc.output(cout);
+        getCalcNumeric(res);
     }
 
 }
@@ -171,6 +163,14 @@ void Model::DisplayAction(const Action& a){
         s="graph";
         break;
     }
+    this->notify(s);
+}
+
+void Model::getCalcNumeric(double dres){
+    *(this->res)=QString::fromStdString(double2string(dres));
+    DoneList.push_back(Action(*res));
+    pos++;
+    string s="text";
     this->notify(s);
 }
 
@@ -339,6 +339,8 @@ void Model::getCubicSpline(vector<Point> p,int Type){
 void Model::getBrokenLine(vector<Point> p){
     points->setPoint(p);
     points->setBroken(true);
+    DoneList.push_back(Action(p));
+    pos++;
     vector<Point> pdata=points->getPoint();
     for(auto it=pdata.begin();it!=pdata.end();it++)
         cout<<"p "<<it->first<<" "<<it->second<<endl;
@@ -349,6 +351,8 @@ void Model::getBrokenLine(vector<Point> p){
 void Model::getCurve(vector<Point> p){
     points->setPoint(p);
     points->setBroken(false);
+    DoneList.push_back(Action(p));
+    pos++;
     vector<Point> pdata=points->getPoint();
     for(auto it=pdata.begin();it!=pdata.end();it++)
         cout<<"p "<<it->first<<" "<<it->second<<endl;
@@ -597,6 +601,51 @@ void Model::shell_ode(string& in,double& lower,double& upper,double& ya){
     upper=string2double(upstr);
     ya=string2double(yastr);
     shell_equation(ode);
+}
+
+vector<Point> Model::shell_point(string &in) {
+    // (1,23) (0.123,-222) (-1.2,33)
+    istringstream is(in);
+    Point p;
+    vector<Point> points;
+    char ch;
+    bool left;
+    int point_count = 0;
+
+    while (is.get(ch) && point_count <= 30) {
+        switch (ch) {
+            case '(':
+                left = true;
+                break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '-':
+                is.putback(ch);
+                if (left)
+                    is >> p.first;
+                else
+                    is >> p.second;
+                break;
+            case ',':
+                left = false;
+                break;
+            case ')':
+                point_count++;
+                points.push_back(p);
+                break;
+            default:
+                continue;
+        }
+    }
+    return points;
 }
 
 void Model::main() {
