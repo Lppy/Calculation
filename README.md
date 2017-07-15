@@ -1,6 +1,15 @@
 # Calculation
 
-​                    每次换行要按一次RUN并清空输入框
+A light and simple mini Matlab.
+
+#### Author
+
+* 陈宏霖：组长，ViewModel , Model
+* 李朋洋：View, 持续集成部署服务器
+* 蔡孜涵：Model, 测试
+* 陈星宇：Model, 测试
+
+#### Usage
 
 1. 矩阵求特征值、特征向量   
 

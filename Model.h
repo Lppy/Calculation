@@ -113,7 +113,7 @@ private:
     //画曲线
     void getCurve(vector<Point> p);
 
-    void getCalcNumeric();
+    void getCalcNumeric(double dres);
 
 };
 

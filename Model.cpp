@@ -118,7 +118,8 @@ void Model::Calculate(string &in){
     }
     else {
         baseInterpreter calc(in);
-        calc.output(cout);
+        double res=calc.output(cout);
+        getCalcNumeric(res);
     }
 
 }
@@ -162,6 +163,14 @@ void Model::DisplayAction(const Action& a){
         s="graph";
         break;
     }
+    this->notify(s);
+}
+
+void Model::getCalcNumeric(double dres){
+    *(this->res)=QString::fromStdString(double2string(dres));
+    DoneList.push_back(Action(*res));
+    pos++;
+    string s="text";
     this->notify(s);
 }
 
