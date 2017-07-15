@@ -7,7 +7,7 @@ double coefficient2[10];
 
 Model::Model()
 {
-    this->res=shared_ptr<QString>(new QString("res"));
+    this->res=shared_ptr<QString>(new QString("Output here"));
     this->points=shared_ptr<Data>(new Data);
     pos=-1;
 }
@@ -44,9 +44,12 @@ void Model::Calculate(string &in){
     //data for test
     memset(coefficient,0,10*sizeof(double));  //clear coefficient
     memset(coefficient2,0,10*sizeof(double));
-    if(in.substr(0,12)=="solve Poly"){
+    if(in.substr(0,10)=="solve Poly"){
         string polys=in.substr(6);
         resolve_polynomial(polys);
+        for(int i=9;i>=0;i--)
+            cout<<coefficient[i]<<" ";
+        cout<<endl;
         getPolynomialRoot(MAXD,coefficient,(double)0.01);
     }
     else if(in.substr(0,12)=="solve Matrix"){
@@ -115,7 +118,8 @@ void Model::Calculate(string &in){
     }
     else {
         baseInterpreter calc(in);
-        calc.output(cout);
+        double res=calc.output(cout);
+        getCalcNumeric(res);
     }
 
 }
@@ -159,6 +163,14 @@ void Model::DisplayAction(const Action& a){
         s="graph";
         break;
     }
+    this->notify(s);
+}
+
+void Model::getCalcNumeric(double dres){
+    *(this->res)=QString::fromStdString(double2string(dres));
+    DoneList.push_back(Action(*res));
+    pos++;
+    string s="text";
     this->notify(s);
 }
 
