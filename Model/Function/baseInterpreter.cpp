@@ -7,13 +7,13 @@
 
 map<string, double> symbol_table;
 
-void baseInterpreter::output(ostream &os) {
+double baseInterpreter::output(ostream &os) {
      while (*input) {
         // cout << ">>> ";
         get_token();
         if (curr_tok == END) break;
         if (curr_tok == PRINT) continue;
-        os << expr(false) << endl;
+        return expr(false);
     }
 }
 
