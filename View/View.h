@@ -46,6 +46,7 @@ private:
     shared_ptr<Data> points;
     shared_ptr<iCommand> calculateCommand,redoCommand,undoCommand;
     iQPushButton *buttonRun,*buttonUndo,*buttonRedo;
+    iQTextEdit* text;
     void setWidget();
 };
 

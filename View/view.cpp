@@ -5,6 +5,8 @@
 #include <QTextEdit>
 #include <QScrollBar>
 #include <QTextBrowser>
+#include <QKeyEvent>
+
 
 View::View(QWidget *parent) :
     QMainWindow(parent),
@@ -18,6 +20,7 @@ View::~View()
     delete buttonRun;
     delete buttonRedo;
     delete buttonUndo;
+    delete text;
 }
 void View::setWidget()
 {
@@ -59,7 +62,9 @@ void View::setWidget()
     buttonRedo->setStyleSheet(buttonStyle);
 
 
-    QTextEdit* text = ui->text;
+    //iQTextEdit* text = ui->text;
+    text = new iQTextEdit(this);
+    text->setView(shared_ptr<View>(this));
     text->setFontPointSize(15);
     text->resize(750,550);
     text->move(200,50);
@@ -105,8 +110,8 @@ void View::refreshDisplay()
 }
 
 void View::execRun(){
-    *in_ptr = ui->text->toPlainText();
-    string str=ui->text->toPlainText().toStdString();
+    *in_ptr = text->toPlainText();
+    string str = text->toPlainText().toStdString();
     shared_ptr<StringParam> sp=shared_ptr<StringParam>(new StringParam);
     sp->setString(str);
     calculateCommand->setParam(static_pointer_cast<Param,StringParam>(sp));
@@ -148,5 +153,6 @@ void View::setUndoCommand(shared_ptr<iCommand> command){
 void View::setPoints(shared_ptr<Data> p){
     points=p;
 }
+
 
 
