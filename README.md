@@ -17,13 +17,13 @@ A light and simple mini Matlab.
 
 1. 矩阵求条件数    
 
-   可选2-条件数 cond(A)  
+   * 可选2-条件数 cond(A)  
 
    ~~~ 
    Cond2 A=[1,2,3;4,5,6;7,8,9]
    ~~~
 
-   无穷-条件数 cond(A,inf)
+   * 无穷-条件数 cond(A,inf)
 
    ~~~
    CondInf A=[1,1,2;6,5,0;71,8,9]
