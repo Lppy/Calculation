@@ -17,9 +17,9 @@ A light and simple mini Matlab.
 
 ###### Windows
 
-1. Download from [here][1]
+1. Download from [here][]
 
-   [1]: 10.189.247.225:8888/Project.rar "Calculation"
+   [here]: 10.189.247.225:8888/Project.rar
 
 2.  Unzip and run
 
