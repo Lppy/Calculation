@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <memory>
+#include <QTextEdit>
+
 using namespace std;
 class View;
 
@@ -17,6 +19,17 @@ public:
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
+private:
+    shared_ptr<View> pv;
+};
+
+class iQTextEdit : public QTextEdit
+{
+public:
+    explicit iQTextEdit(QWidget *parent):QTextEdit(parent){}
+    void setView(const shared_ptr<View>& p){ pv=p; }
+protected:
+    void keyPressEvent(QKeyEvent *event);
 private:
     shared_ptr<View> pv;
 };

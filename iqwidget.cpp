@@ -1,6 +1,7 @@
 #include "iqwidget.h"
 #include "View/View.h"
 #include <QDebug>
+#include <QKeyEvent>
 
 iDataClass::~iDataClass(){}
 
@@ -19,5 +20,13 @@ void iQPushButton::mouseReleaseEvent(QMouseEvent *event)
         pv->execRedo();
     else if(this->text()=="UNDO")
         pv->execUndo();
+}
+
+void iQTextEdit::keyPressEvent(QKeyEvent *event)
+{
+    QTextEdit::keyPressEvent(event);
+
+    if(event->key()&Qt::Key_Enter)
+        pv->execRun();
 }
 
