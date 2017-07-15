@@ -2,6 +2,10 @@
 
 A light and simple mini Matlab.
 
+#### Dependency
+
+* Qt 5+
+
 #### Author
 
 * 陈宏霖：组长，ViewModel , Model
