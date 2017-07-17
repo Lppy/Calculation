@@ -26,7 +26,7 @@ void iQTextEdit::keyPressEvent(QKeyEvent *event)
 {
     QTextEdit::keyPressEvent(event);
 
-    if(event->key()&Qt::Key_Enter)
+    if(event->key() == Qt::Key_Control)
         pv->execRun();
 }
 
