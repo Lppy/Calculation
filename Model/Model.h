@@ -6,9 +6,19 @@
 #include "Function/ODE.h"
 #include "Function/Root_of_Polynomial.h"
 //#include "Function/curve_fitting.h"
-#include "Function/baseInterpreter.h"
 #include "Function/Cond.h"
 #include "Function/Cubic_Spline.h"
+#include "Shell//baseInterpreter.h"
+#include "Shell/iBinding.h"
+#include "Shell/BrokenLineBinding.h"
+#include "Shell/Cond2Binding.h"
+#include "Shell/CondInfBinding.h"
+#include "Shell/CurveBinding.h"
+#include "Shell/FitBinding.h"
+#include "Shell/IntBinding.h"
+#include "Shell/MatrixBinding.h"
+#include "Shell/OdeBinding.h"
+#include "Shell/PolyBinding.h"
 #include <QString>
 #include <memory>
 #include <map>
@@ -36,8 +46,9 @@ public:
     void Calculate(string &in);
     void Redo();
     void Undo();
-
 private:
+    map<string,shared_ptr<iBinding>> binding_table;  /*table for binding functions*/
+   // shared_ptr<iBinding> brokenLineBinding,cond2Binding,condInfBinding,curveBinding,fitBinding,intBinding,matrixBinding,odeBinding,polyBinding;
     void main();
 
     const int MAXD=9;   //maximum degree
@@ -112,8 +123,17 @@ private:
     void getBrokenLine(vector<Point> p);
     //画曲线
     void getCurve(vector<Point> p);
-
+    //数值计算
     void getCalcNumeric(double dres);
 
+    friend class BrokenLineBinding;
+    friend class Cond2Binding;
+    friend class CondInfBinding;
+    friend class CurveBinding;
+    friend class FitBinding;
+    friend class IntBinding;
+    friend class MatrixBinding;
+    friend class OdeBinding;
+    friend class PolyBinding;
 };
 
