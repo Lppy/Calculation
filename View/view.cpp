@@ -24,7 +24,7 @@ View::~View()
 }
 void View::setWidget()
 {
-    this->setFixedSize(1000,800);
+    this->setFixedSize(600,400);
     this->setWindowTitle("Calculator");
     this->setWindowOpacity(0.92);
 
@@ -42,21 +42,21 @@ void View::setWidget()
 
     buttonRun = new iQPushButton(this, shared_ptr<View>(this));
     buttonRun->resize(80,35);
-    buttonRun->move(850,620);
+    buttonRun->move(450,220);
     buttonRun->setText("RUN");
     buttonRun->show();
     buttonRun->setStyleSheet(buttonStyle);
 
     buttonUndo = new iQPushButton(this, shared_ptr<View>(this));
     buttonUndo->resize(80,35);
-    buttonUndo->move(650,620);
+    buttonUndo->move(250,220);
     buttonUndo->setText("UNDO");
     buttonUndo->show();
     buttonUndo->setStyleSheet(buttonStyle);
 
     buttonRedo = new iQPushButton(this, shared_ptr<View>(this));
     buttonRedo->resize(80,35);
-    buttonRedo->move(750,620);
+    buttonRedo->move(350,220);
     buttonRedo->setText("REDO");
     buttonRedo->show();
     buttonRedo->setStyleSheet(buttonStyle);
@@ -66,8 +66,8 @@ void View::setWidget()
     text = new iQTextEdit(this);
     text->setView(shared_ptr<View>(this));
     text->setFontPointSize(15);
-    text->resize(750,550);
-    text->move(200,50);
+    text->resize(450,160);
+    text->move(100,50);
     text->append(QString("Input here"));
     text->show();
     QString textStyle= "QTextEdit {\
@@ -80,8 +80,8 @@ void View::setWidget()
 
     QTextBrowser* textBrowser = ui->textBrowser;
     textBrowser->setFontPointSize(15);
-    textBrowser->resize(750,100);
-    textBrowser->move(200,650);
+    textBrowser->resize(450,100);
+    textBrowser->move(100,250);
     textBrowser->setText(QString(out_ptr->data()));
     textBrowser->setAlignment(Qt::AlignTop);
     textBrowser->show();
