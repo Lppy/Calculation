@@ -15,6 +15,8 @@ A light and simple mini Matlab.
 
 #### Usage
 
+- RUN快捷键：ctrl
+
 1. 矩阵求条件数    
 
    * 可选2-条件数 cond(A)  
