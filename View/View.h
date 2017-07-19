@@ -25,11 +25,9 @@ public:
     explicit View(QWidget *parent = 0);
     ~View();
 
-    void setInputString(shared_ptr<QString> in);
     void setOutputString(shared_ptr<QString> out);
  //   void setButtonRun(shared_ptr<iEventClass> iE);
     void setPoints(shared_ptr<Data> p);
-    shared_ptr<QString>& getInputString();
 
     void refreshDisplay();
     void execRun();
