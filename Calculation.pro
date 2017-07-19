@@ -37,8 +37,18 @@ SOURCES += main.cpp\
     ViewModel/Command/CalculateCommand.cpp \
     ViewModel/Command/RedoCommand.cpp \
     ViewModel/Command/UndoCommand.cpp \
-    Model/Function/baseInterpreter.cpp \
-    Model/Function/Cubic_Spline.cpp
+    Model/Function/Cubic_Spline.cpp \
+    Model/Function/eigenvalue.cpp \
+    Model/Shell/baseInterpreter.cpp \
+    Model/Shell/PolyBinding.cpp \
+    Model/Shell/MatrixBinding.cpp \
+    Model/Shell/IntBinding.cpp \
+    Model/Shell/Cond2Binding.cpp \
+    Model/Shell/CondInfBinding.cpp \
+    Model/Shell/OdeBinding.cpp \
+    Model/Shell/FitBinding.cpp \
+    Model/Shell/CurveBinding.cpp \
+    Model/Shell/BrokenLineBinding.cpp
 
 HEADERS  += \
     View/View.h \
@@ -57,12 +67,21 @@ HEADERS  += \
     Common/iCommand.h \
     Common/Params.h \
     Model/Function/eigenvalue.h \
-    Model/Function/root_of_matrix.h \
     ViewModel/Command/CalculateCommand.h \
     ViewModel/Command/RedoCommand.h \
     ViewModel/Command/UndoCommand.h \
-    Model/Function/baseInterpreter.h \
-    Model/Function/Cubic_Spline.h
+    Model/Function/Cubic_Spline.h \
+    Model/Shell/baseInterpreter.h \
+    Model/Shell/PolyBinding.h \
+    Model/Shell/iBinding.h \
+    Model/Shell/MatrixBinding.h \
+    Model/Shell/IntBinding.h \
+    Model/Shell/Cond2Binding.h \
+    Model/Shell/CondInfBinding.h \
+    Model/Shell/OdeBinding.h \
+    Model/Shell/FitBinding.h \
+    Model/Shell/CurveBinding.h \
+    Model/Shell/BrokenLineBinding.h
 
 FORMS    += \
     View.ui

@@ -1,11 +1,11 @@
 #include "Cubic_Spline.h"
 
 vector<Point> Cubic_Spline::cubic_Spline(vector<Point> p, int Type){
-    int n=p.size();
+    int n=p.size()-1;
     double x[MAX_N], f[MAX_N], a[MAX_N], b[MAX_N], c[MAX_N], d[MAX_N];
-    double s0=0, sn=0, Fmax = 0, t0, tm, h, t, xmax=-1e10, xmin=1e10;
+    double s0=0, sn=0, Fmax = INF, t0, tm, h, t, xmax=-1e10, xmin=1e10, yres;
     vector<Point> res;
-    for(int i=0;i<n;i++){
+    for(int i=0;i<=n;i++){
         x[i]=p[i].first;
         f[i]=p[i].second;
         if(x[i]>xmax) xmax=x[i];
@@ -20,7 +20,10 @@ vector<Point> Cubic_Spline::cubic_Spline(vector<Point> p, int Type){
     h = (tm-t0)/(double)m;
     for (int i=m; i>=0; i--) {
         t = t0+h*(double)i;
-        res.push_back(Point(t,S(t, Fmax, n, x, a, b, c, d)));
+        if((yres=S(t, Fmax, n, x, a, b, c, d))==Fmax)
+            continue;
+        else
+            res.push_back(Point(t,yres));
         cout<<"f("<<t<<") ="<<S(t, Fmax, n, x, a, b, c, d)<<endl;
     }
     return res;
@@ -112,8 +115,8 @@ void Cubic_Spline::get_Cubic_Spline(int n, double x[], double f[], int Type, dou
 
 double Cubic_Spline::S( double t, double Fmax, int n, double x[], double a[], double b[], double c[], double d[] ){
     int i;
- //   if(t>x[n]||t<x[0]) return Fmax;
-    if(t==x[0]) i=1;
+    if(t-x[n]>ZERO||x[0]-t>ZERO) return Fmax;
+    if(fabs(t-x[0])<ZERO) i=1;
     else{
         for(i=1;i<=n;i++){
            if(t>x[i-1]&&t<=x[i]) break;

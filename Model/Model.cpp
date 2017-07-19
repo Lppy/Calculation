@@ -10,6 +10,17 @@ Model::Model()
     this->res=shared_ptr<QString>(new QString("Output here"));
     this->points=shared_ptr<Data>(new Data);
     pos=-1;
+
+    /*binding functions and model in shell*/
+    binding_table["solvePoly"]=static_pointer_cast<iBinding,PolyBinding>(shared_ptr<PolyBinding>(new PolyBinding(this)));
+    binding_table["solveMatrix"]=static_pointer_cast<iBinding,MatrixBinding>(shared_ptr<MatrixBinding>(new MatrixBinding(this)));
+    binding_table["Int"]=static_pointer_cast<iBinding,IntBinding>(shared_ptr<IntBinding>(new IntBinding(this)));
+    binding_table["Cond2"]=static_pointer_cast<iBinding,Cond2Binding>(shared_ptr<Cond2Binding>(new Cond2Binding(this)));
+    binding_table["CondInf"]=static_pointer_cast<iBinding,CondInfBinding>(shared_ptr<CondInfBinding>(new CondInfBinding(this)));
+    binding_table["Ode"]=static_pointer_cast<iBinding,OdeBinding>(shared_ptr<OdeBinding>(new OdeBinding(this)));
+    binding_table["Fit"]=static_pointer_cast<iBinding,FitBinding>(shared_ptr<FitBinding>(new FitBinding(this)));
+    binding_table["Curve"]=static_pointer_cast<iBinding,CurveBinding>(shared_ptr<CurveBinding>(new CurveBinding(this)));
+    binding_table["BrokenLine"]=static_pointer_cast<iBinding,BrokenLineBinding>(shared_ptr<BrokenLineBinding>(new BrokenLineBinding(this)));
 }
 
 Model::~Model()
@@ -44,7 +55,16 @@ void Model::Calculate(string &in){
     //data for test
     memset(coefficient,0,10*sizeof(double));  //clear coefficient
     memset(coefficient2,0,10*sizeof(double));
-    if(in.substr(0,10)=="solve Poly"){
+    size_t space;
+
+    if((space=in.find(" "))!=in.npos){
+        string type=in.substr(0,space);
+        if(binding_table.find(type)!=binding_table.end())
+            binding_table[type]->exec(in);
+    }
+    /*
+
+    if(in.substr(0,9)=="solvePoly"){
         string polys=in.substr(6);
         resolve_polynomial(polys);
         for(int i=9;i>=0;i--)
@@ -52,7 +72,7 @@ void Model::Calculate(string &in){
         cout<<endl;
         getPolynomialRoot(MAXD,coefficient,(double)0.01);
     }
-    else if(in.substr(0,12)=="solve Matrix"){
+    else if(in.substr(0,11)=="solveMatrix"){
         size_t equal=in.find("x=");
         string aa(1,in[equal-1]);
         string bb(1,in[equal+2]);
@@ -109,14 +129,14 @@ void Model::Calculate(string &in){
         string str=in.substr(11);
         vector<Point> p=shell_point(str);
         getBrokenLine(p);
-    }
-    else if(in.find("[") != in.npos){
+    }*/
+    else if(in.find("[") != in.npos){   //save matrix
         size_t start = in.find("[");
         istringstream is(in.substr(start + 1));
         cout<<"in model::before shell_save_matrix"<<endl;
         shell_save_matrix(in,is);
     }
-    else {
+    else {                             //normal calculation
         baseInterpreter calc(in);
         double res=calc.output(cout);
         getCalcNumeric(res);

@@ -68,7 +68,7 @@ void View::setWidget()
     text->setFontPointSize(15);
     text->resize(750,550);
     text->move(200,50);
-    text->append(QString(in_ptr->data()));
+    text->append(QString("Input here"));
     text->show();
     QString textStyle= "QTextEdit {\
             border: 1px solid rgb(111, 156, 207);"
@@ -94,10 +94,6 @@ void View::show()
     QMainWindow::show();
 }
 
-void View::setInputString(shared_ptr<QString> in)
-{
-    in_ptr = in;
-}
 void View::setOutputString(shared_ptr<QString> out)
 {
     out_ptr = out;
@@ -110,7 +106,7 @@ void View::refreshDisplay()
 }
 
 void View::execRun(){
-    *in_ptr = text->toPlainText();
+   // *in_ptr = text->toPlainText();
     string str = text->toPlainText().toStdString();
     shared_ptr<StringParam> sp=shared_ptr<StringParam>(new StringParam);
     sp->setString(str);

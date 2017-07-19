@@ -23,19 +23,16 @@ int main(int argc, char *argv[])
     pvm->setModel(pm);
 
     pm->AddNotification(static_pointer_cast<INotification,ViewModel>(pvm));
-
-    pv->setInputString(pvm->getInputString());
     pvm->AddNotification(static_pointer_cast<INotification,View>(pv));
+
     pvm->setOutputString(pm->getRes());
     pv->setOutputString(pvm->getOutputString());
-
-  //  pv->setButtonRun(static_pointer_cast<iEventClass,View>(pv));
+    pvm->setPoints(pm->getPoints());
+    pv->setPoints(pvm->getPoints());
 
     pv->setCalculateCommand(pvm->getCalculateCommand());
     pv->setRedoCommand(pvm->getRedoCommand());
     pv->setUndoCommand(pvm->getUndoCommand());
-    pvm->setPoints(pm->getPoints());
-    pv->setPoints(pvm->getPoints());
 
     pv->show();
 

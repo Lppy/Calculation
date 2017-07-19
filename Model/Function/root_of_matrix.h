@@ -8,7 +8,7 @@ using namespace std;
 class Root_of_Matrix {
 private:
 
-	const int MAXN = 10;  //maximum degree of the polynomial
+    const int n = 10;  //maximum degree of the polynomial
 	//const int n = 3;
 public:
 	Root_of_Matrix() {}

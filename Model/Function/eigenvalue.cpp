@@ -60,11 +60,11 @@ void Eigenvalue::MatrixHessenberg(double * A, int n, double * result) {
 	for (k = 1; k<n - 1; k++) {
 		i = k - 1;
 		max = k;
-		temp = abs(Atemp[k*n + i]);
+        temp = fabs(Atemp[k*n + i]);
 
 		for (j = k + 1; j<n; j++) {
-			if (abs(Atemp[j*n + i]) > temp) {
-				temp = abs(A[j*n + i]);
+            if (fabs(Atemp[j*n + i]) > temp) {
+                temp = fabs(A[j*n + i]);
 				max = j;
 			}
 		}
@@ -128,10 +128,10 @@ bool Eigenvalue::MatrixEigenValue(Matrix a, int n, int LoopNumber,double *result
 		t = m - 1;
 
 		while (t>0) {
-			temp = abs(A[(t - 1)*n + t - 1]);
-			temp += abs(A[t*n + t]);
+            temp = fabs(A[(t - 1)*n + t - 1]);
+            temp += fabs(A[t*n + t]);
 
-			if (abs(A[t*n + t - 1]) > temp)
+            if (fabs(A[t*n + t - 1]) > temp)
 				t--;
 			else
 				break;
@@ -147,7 +147,7 @@ bool Eigenvalue::MatrixEigenValue(Matrix a, int n, int LoopNumber,double *result
 			tempb = -Atemp[(m - 1)*n + m - 1] - Atemp[(m - 2)*n + m - 2];
 			tempc = Atemp[(m - 1)*n + m - 1] * Atemp[(m - 2)*n + m - 2] - Atemp[(m - 1)*n + m - 2] * Atemp[(m - 2)*n + m - 1];
 			tempd = tempb*tempb - 4 * tempc;
-			y = sqrt(abs(tempd));
+            y = sqrt(fabs(tempd));
 			if (tempd > 0) {
 				x = 1;
 				if (tempb < 0)

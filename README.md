@@ -15,6 +15,8 @@ A light and simple mini Matlab.
 
 #### Usage
 
+- RUN快捷键：ctrl
+
 1. 矩阵求条件数    
 
    * 可选2-条件数 cond(A)  
@@ -33,15 +35,15 @@ A light and simple mini Matlab.
 
    ~~~
    A=[1,2,3;4,5,6;7,8,9]
-   b=[6;15;24]
-   solve Matrix Ax=b
+   b=[0;0;0]
+   solveMatrix Ax=b
    ~~~
 
 3. 求解高阶方程  
 
    ~~~
-   solve Poly  6*x^6+4*x^3+2*x+1=0
-   solve Poly  1*x^2+2*x^1+1=0
+   solvePoly  6*x^6+4*x^3+2*x+1=0
+   solvePoly  1*x^2+2*x^1+1=0
    ~~~
 
 4. 求解定积分  
@@ -54,23 +56,29 @@ A light and simple mini Matlab.
 5. 求解常微分方程  
 
    ```
-   dy/dt=y^2-t^4+y^3-t+100 (0,1) y(0)=0
-   dy/dt=y-t^2+1 (0,2) y(0)=0.5
+   Ode dy/dt=y^2-t^4+y^3-t+100 (0,1) y(0)=0
+   Ode dy/dt=y-t^2+1 (0,2) y(0)=0.5
    ```
 
-6. 曲线拟合 
+6. 自然样条拟合
+
+   ~~~
+   Fit (0,0) (1,1) (2,2)
+   ~~~
+
+7. 曲线拟合 
 
    ~~~
    Curve (0,1) (1,2) (9,10) (40,21) (6,3) (7,-10) (33,-19)
    ~~~
 
-7. 折线图
+8. 折线图
 
    ~~~
    BrokenLine (0,1)  (9,10) (40,21) (6,3) (33,-19)
    ~~~
 
-8. 数值计算
+9. 数值计算
 
    ~~~
    a=1
