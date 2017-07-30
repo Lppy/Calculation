@@ -40,7 +40,7 @@ A light and simple mini Matlab.
 3. 求解高阶方程  
 
    ~~~
-   solvePoly  6*x^6+4*x^3+2*x+1=0
+   solvePoly  6*x^6+4*x^3+2*x^1+1=0
    solvePoly  1*x^2+2*x^1+1=0
    ~~~
 
